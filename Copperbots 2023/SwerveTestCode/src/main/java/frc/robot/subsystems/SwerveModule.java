@@ -149,8 +149,12 @@ public class SwerveModule {
   public SwerveModuleState getState() {
     return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity() * 10 * encUnitMeters, new Rotation2d(getTurnAngle()));
   }
-
-  public SwerveModulePosititon getPosition() {
+/**
+ * Returns the current position of the module.
+ * 
+ * @return the current position of the module.
+ */
+  public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
       m_driveMotor.getSelectedSensorPosition() * encUnitMeters, new Rotation2d(getTurnAngle()));
     

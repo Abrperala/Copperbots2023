@@ -13,11 +13,11 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.SwerveModule;
 import static frc.robot.Constants.DriveConstants.*;
 
 /** Represents a swerve drive style drivetrain. */
@@ -40,7 +40,7 @@ public class Drivetrain extends SubsystemBase {
     BACK_LEFT_MODULE_STEER_ENCODER, false, 2.993, 0.632, 2.200, 0.304, -138.51, 4.954, 0.01, 0.511, 0.236, 0.007); //kP is +1
 
   private final SwerveModule m_backRight = new SwerveModule(BACK_RIGHT_MODULE_DRIVE_MOTOR, BACK_RIGHT_MODULE_STEER_MOTOR, 
-    BACK_RIGHT_MODULE_STEER_ENCODER, false, 2.993, 0.632, 2.200, 0.304, -270.45, 4.900, 0.01, 0.584, 0.232, 0.007); //kP is +1
+    BACK_RIGHT_MODULE_STEER_ENCODER, false, 2.993, 0.632, 2.200, 0.304, -270.45, 2.53, 0.04, 0.25, 0.036, 0.0007); //kP is +1
 
   // private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -53,7 +53,7 @@ public class Drivetrain extends SubsystemBase {
         new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
 
   public final SwerveDriveOdometry m_odometry =
-      new SwerveDriveOdometry(m_kinematics, robotRotation2d(), );
+      new SwerveDriveOdometry(m_kinematics, robotRotation2d(), getModulePositions());
 
   // Class-wide desired chassis speeds
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
@@ -92,14 +92,11 @@ public class Drivetrain extends SubsystemBase {
   public void updateOdometry() {
     m_odometry.update(
         robotRotation2d(),
-        m_frontLeft.getPosition(),
-        m_frontRight.getPosition(),
-        m_backLeft.getPosition(),
-        m_backRight.getPosition());
+        getModulePositions());
   }  
   /** Sets the robot odometry to a given Pose2d */
   public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(pose, robotRotation2d());
+    m_odometry.resetPosition(robotRotation2d(),getModulePositions(), pose);
   }
 
     /**
@@ -109,11 +106,19 @@ public class Drivetrain extends SubsystemBase {
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
-
-  public int getModulePositions() {
-    private int[] foo = {0,1,2};
-    int bar = 1;
-    return bar;
+/**
+ * Returns the positions of each swerve module 
+ * 
+ * @return the positions of each swerve module 
+ */
+  public SwerveModulePosition[] getModulePositions() {
+     SwerveModulePosition[] positions = {
+      m_frontLeft.getPosition(),
+      m_frontRight.getPosition(),
+      m_backLeft.getPosition(),
+      m_backRight.getPosition()
+    };
+    return positions;
   }
 
   public double getGyroAngle() {
