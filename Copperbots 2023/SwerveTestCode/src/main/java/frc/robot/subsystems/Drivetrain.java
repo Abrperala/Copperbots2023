@@ -16,7 +16,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.DriveConstants.*;
 
@@ -31,16 +30,16 @@ public class Drivetrain extends SubsystemBase {
           Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0) * 0.9;
 
   private final SwerveModule m_frontLeft = new SwerveModule(FRONT_LEFT_MODULE_DRIVE_MOTOR, FRONT_LEFT_MODULE_STEER_MOTOR,
-    FRONT_LEFT_MODULE_STEER_ENCODER, false, 2.993, 0.632, 2.200, 0.304, -214.52, 4.599, 0.01, 0.535, 0.228, 0.006); //kP is +.3 kS is +0.2
+    FRONT_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -214.52, 5.0, 0.02, 0.5, 0.03, 0.004); //kP is +.3 kS is +0.2
 
   private final SwerveModule m_frontRight = new SwerveModule(FRONT_RIGHT_MODULE_DRIVE_MOTOR, FRONT_RIGHT_MODULE_STEER_MOTOR, 
-    FRONT_RIGHT_MODULE_STEER_ENCODER, false, 2.993, 0.632, 2.200, 0.304, -79.78, 4.732, 0.01, 0.500, 0.236, 0.007); //kP is +.3
+    FRONT_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -79.78, 5.0, 0.02, 0.5, 0.03, 0.004); //kP is +.3
 
   private final SwerveModule m_backLeft = new SwerveModule(BACK_LEFT_MODULE_DRIVE_MOTOR, BACK_LEFT_MODULE_STEER_MOTOR, 
-    BACK_LEFT_MODULE_STEER_ENCODER, false, 2.993, 0.632, 2.200, 0.304, -138.51, 4.954, 0.01, 0.511, 0.236, 0.007); //kP is +1
+    BACK_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -138.51, 5.75, 0.02, 0.5, 0.03, 0.004); //kP is +1
 
   private final SwerveModule m_backRight = new SwerveModule(BACK_RIGHT_MODULE_DRIVE_MOTOR, BACK_RIGHT_MODULE_STEER_MOTOR, 
-    BACK_RIGHT_MODULE_STEER_ENCODER, false, 2.993, 0.632, 2.200, 0.304, -270.45, 2.53, 0.04, 0.25, 0.036, 0.0007); //kP is +1
+    BACK_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -270.45, 5.75, 0.02, 0.5, 0.03, 0.004); //kP is +1
 
   // private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -73,7 +72,7 @@ public class Drivetrain extends SubsystemBase {
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     if(fieldRelative) {
-    m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d());
+      m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getRotation2d());
     } else {
       m_chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, rot);
     }
@@ -121,6 +120,24 @@ public class Drivetrain extends SubsystemBase {
     return positions;
   }
 
+  /**
+   * Control serve module output with proper homing behavior
+   * @param states Desired module states when m_chassisSpeeds != (0,0,0)
+   */
+  private void commandModules(SwerveModuleState[] states) {
+    if (m_chassisSpeeds.vxMetersPerSecond == 0.0 && m_chassisSpeeds.vyMetersPerSecond == 0.0 && m_chassisSpeeds.omegaRadiansPerSecond == 0.0) {
+      m_frontLeft.setDesiredState(new SwerveModuleState(0.0, new Rotation2d(0.0)));
+      m_frontRight.setDesiredState(new SwerveModuleState(0.0, new Rotation2d(0.0)));
+      m_backLeft.setDesiredState(new SwerveModuleState(0.0, new Rotation2d(0.0)));
+      m_backRight.setDesiredState(new SwerveModuleState(0.0, new Rotation2d(0.0)));
+    } else {
+      m_frontLeft.setDesiredState(states[0]);
+      m_frontRight.setDesiredState(states[1]);
+      m_backLeft.setDesiredState(states[2]);
+      m_backRight.setDesiredState(states[3]);      
+    }
+  }
+
   public double getGyroAngle() {
     return -1.0 * m_gyro.getAngle();
   }
@@ -137,17 +154,11 @@ public class Drivetrain extends SubsystemBase {
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
-    m_frontLeft.setDesiredState(states[0]);
-    m_frontRight.setDesiredState(states[1]);
-    m_backLeft.setDesiredState(states[2]);
-    m_backRight.setDesiredState(states[3]);
+    // toSwerveModuleStates() no longer sets target pos to 0 when inputted (0,0,0) lmao
+    commandModules(states);
 
     // Update the odometry in the periodic block -- duh @me
     updateOdometry();
-
-    SmartDashboard.putNumber("Gyro Return", getGyroAngle());
-    SmartDashboard.putNumber("F Left Drive", m_frontLeft.getDriveSpeed());
-    
 
   }
 
