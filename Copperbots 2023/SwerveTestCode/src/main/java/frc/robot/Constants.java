@@ -19,6 +19,17 @@ public final class Constants {
     
   }
 
+  public static final class LimelightConstants {
+
+    public static final int DISABLED_PIPELINE = 0;
+    public static final int AIM_PIPELINE = 1; // TODO: change back to 1!!!
+    public static final double TARGET_HEIGHT = 3.0; // TODO: get actual target height (or temp. one...)
+    public static final double MAX_ANGLE_ERROR_X = 15.0; // TODO: find actual max reportable TX (FROM CLOSEST USEFUL SHOT!!)
+    public static final double MAX_ANGLE_ERROR_Y = 15.0; // TODO: find actual max reportable TY (THAT WE WILL REASONABLY BE AIMING FROM!!!)
+    public static final double TOLERANCE_ERROR_X = 2.0; 
+    public static final double TOLERANCE_ERROR_Y = 6.0; // we can shoot inside of a ~10 deg range
+}
+
   public static final class DriveConstants {
 
     // Drive PID Constants
@@ -97,4 +108,7 @@ public final class Constants {
     public static final double BACK_RIGHT_OFFSET_DEGREES = 272.55;
 
     }
+
+
+
 }

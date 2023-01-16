@@ -9,11 +9,14 @@ import frc.robot.commands.Autos;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.TurnOnField;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -54,6 +57,9 @@ public class RobotContainer {
   private void configureBindings() {
     
     new JoystickButton(m_driver, 10).onTrue(new InstantCommand(m_drivetrain::resetGyro));
+
+    new JoystickButton(m_driver, 14).onTrue (new TurnOnField(m_drivetrain));
+    
   }
 
   /**
@@ -88,4 +94,11 @@ public class RobotContainer {
     return value;
   }
 
-}
+  public void periodic() {
+    SmartDashboard.putNumber("Gyro Posiition", m_drivetrain.getGyroPos());
+    
+  
+    }
+  }
+
+
