@@ -150,7 +150,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getGyroPos() {
-    return MathUtil.inputModulus(0, 360, robotRotation2d().getDegrees());
+    return MathUtil.inputModulus(robotRotation2d().getDegrees(), 0, 360);
   }
 
   @Override

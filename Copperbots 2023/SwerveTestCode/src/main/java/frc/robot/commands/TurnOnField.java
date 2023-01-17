@@ -33,14 +33,14 @@ public class TurnOnField extends CommandBase {
     m_targetSpeeds = new ChassisSpeeds(
       0.0, 
       0.0,
-      getGyroError(90.0) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.2
+      getGyroErrorWithLimit(90.0) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 1
     );
     m_drivetrain.driveFromSpeeds(m_targetSpeeds, false);
   }
 
   @Override
   public boolean isFinished() {
-    return Math.abs(getGyroError(90.0)) < 0.5;
+    return Math.abs(getGyroError(90.0)) < 0.0005;
   }
 
   @Override
@@ -54,12 +54,31 @@ public class TurnOnField extends CommandBase {
    * @return The percent error of the drivebase
    */
   public double getGyroError(double targetAngle) {
-    double adjustedAngle = m_drivetrain.getGyroPos() - targetAngle;
+    double adjustedAngle = m_drivetrain.getGyroPos();
     SmartDashboard.putNumber("adjusted angle", adjustedAngle);
     if (adjustedAngle > 180) {
-      return (adjustedAngle - 180) / 180.0;
+      return -(adjustedAngle - 360) / 360.0;
     } else {
-      return -adjustedAngle / 180.0;
+      return -adjustedAngle / 360;
     }
   }
+  
+  public double getGyroErrorWithLimit(double targetAngle) {
+   if (getGyroError(targetAngle) < 0){
+    if (getGyroError(targetAngle) < -0.05){
+      return getGyroError(targetAngle);
+    }
+    else {
+      return -0.05;
+    }
+  }
+  else{
+    if (getGyroError(targetAngle) < 0.05)
+    return 0.05;
+    else {
+      return getGyroError(targetAngle);
+    }
+  }
+}
+
 }
