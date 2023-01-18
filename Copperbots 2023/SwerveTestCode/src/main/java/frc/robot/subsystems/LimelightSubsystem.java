@@ -19,7 +19,7 @@ public class LimelightSubsystem extends SubsystemBase{
     private String m_tableName;
 
     public LimelightSubsystem() {
-
+        
         m_tableName = "limelight";
         m_table = NetworkTableInstance.getDefault().getTable(m_tableName);
         
@@ -94,6 +94,8 @@ public class LimelightSubsystem extends SubsystemBase{
   @Override
   public void periodic() {
       SmartDashboard.putBoolean("In Position", inPositionX());
+      SmartDashboard.putNumber(" Angle Error X", getAngleErrorX());
+      SmartDashboard.putNumber(" Angle Error Y", getAngleErrorY());
   }
 
 }

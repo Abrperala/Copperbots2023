@@ -1,8 +1,7 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.geometry.Rotation2d;
+
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
@@ -12,8 +11,6 @@ public class TurnOnField extends CommandBase {
 
   private final Drivetrain m_drivetrain;
   private ChassisSpeeds m_targetSpeeds;
-
-  private static final int TARGET_ANGLE = 90;
 
   public TurnOnField(Drivetrain drivetrain) {
     this.m_drivetrain = drivetrain;
@@ -28,19 +25,18 @@ public class TurnOnField extends CommandBase {
 
   @Override
   public void execute(){
-    SmartDashboard.putNumber("angle error pos", getGyroError(90.0));
     
     m_targetSpeeds = new ChassisSpeeds(
       0.0, 
       0.0,
-      getGyroErrorWithLimit(90.0) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 1
+      getGyroErrorWithLimit(0.0) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 1
     );
     m_drivetrain.driveFromSpeeds(m_targetSpeeds, false);
   }
 
   @Override
   public boolean isFinished() {
-    return Math.abs(getGyroError(90.0)) < 0.0005;
+    return Math.abs(getGyroError(0.0)) < 0.0005;
   }
 
   @Override
@@ -54,8 +50,7 @@ public class TurnOnField extends CommandBase {
    * @return The percent error of the drivebase
    */
   public double getGyroError(double targetAngle) {
-    double adjustedAngle = m_drivetrain.getGyroPos();
-    SmartDashboard.putNumber("adjusted angle", adjustedAngle);
+    double adjustedAngle = m_drivetrain.getGyroPos() - targetAngle;
     if (adjustedAngle > 180) {
       return -(adjustedAngle - 360) / 360.0;
     } else {
@@ -63,6 +58,11 @@ public class TurnOnField extends CommandBase {
     }
   }
   
+  /**
+   * Get the percent angle error but with limit at 5% and -5% for speed reasons
+   * @param targetAngle 
+   * @return percent angle error of the drivebase but with a limit
+   */
   public double getGyroErrorWithLimit(double targetAngle) {
    if (getGyroError(targetAngle) < 0){
     if (getGyroError(targetAngle) < -0.05){
