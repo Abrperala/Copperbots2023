@@ -22,13 +22,13 @@ public class AlignWithPoles extends CommandBase {
 
   @Override
   public void initialize() {
-    m_limelight.limelightDriveConfig();
+    m_limelight.limelightAimConfig();
     m_targetSpeeds = new ChassisSpeeds();
   }
 
   @Override
   public void execute() {
-    m_limelight.limelightDriveConfig();
+    m_limelight.limelightAimConfig();
     
     if(m_limelight.inPositionX()) {
     m_targetSpeeds = new ChassisSpeeds(
@@ -40,7 +40,7 @@ public class AlignWithPoles extends CommandBase {
      }
      else { 
       m_targetSpeeds = new ChassisSpeeds(
-        m_limelight.getPercentErrorX() * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND * 0.4, 
+       -m_limelight.getPercentErrorX() * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND * 0.4, 
         0.0,
         0.0
       );
