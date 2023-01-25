@@ -29,7 +29,7 @@ public class TurnOnField extends CommandBase {
     m_targetSpeeds = new ChassisSpeeds(
       0.0, 
       0.0,
-      getGyroErrorWithLimit(0.0) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 1
+      getGyroErrorWithLimit(0.0) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND 
     );
     m_drivetrain.driveFromSpeeds(m_targetSpeeds, false);
   }
