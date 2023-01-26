@@ -41,7 +41,9 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
   navx.reset();
   }
-
+/**
+ * Methods to utilize the NavX 
+ */
   public void calibrateGyro() {
     navx.calibrate();
   }
@@ -55,7 +57,6 @@ public class Drivetrain extends SubsystemBase {
   public double getPitch() {
     return navx.getPitch();
   }
-
   public double getRoll() {
     return navx.getRoll();
   }

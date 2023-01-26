@@ -48,9 +48,10 @@ public class RobotContainer {
       //  left bumper toggles intake
       new JoystickButton(stick, 5)
       .onTrue(new InstantCommand(m_piston::togglePiston));
-      
+     
+      // makes the Square button use the balance command 
       new JoystickButton(stick, 1).onTrue(new Balance(m_drivetrain));
-
+      //makes the X button reset the Gyro
       new JoystickButton(stick, 2).onTrue((new InstantCommand(m_drivetrain::zeroGyro)));
     }
 }

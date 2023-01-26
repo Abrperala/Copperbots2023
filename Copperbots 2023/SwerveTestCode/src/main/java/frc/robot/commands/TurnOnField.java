@@ -6,7 +6,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 
-
+/**
+ * command for the robot to rotate to face the cone nodes
+ * 
+ */
 public class TurnOnField extends CommandBase {
 
   private final Drivetrain m_drivetrain;
@@ -23,9 +26,11 @@ public class TurnOnField extends CommandBase {
     m_targetSpeeds = new ChassisSpeeds();
   }
 
+ /**
+  * sets the rotational speed to the gyro error (Propertional P) 
+  */
   @Override
   public void execute(){
-    
     m_targetSpeeds = new ChassisSpeeds(
       0.0, 
       0.0,
@@ -35,10 +40,15 @@ public class TurnOnField extends CommandBase {
   }
 
   @Override
+  /**
+   * stops the command when the gyro error is within 0.05% 
+   */
   public boolean isFinished() {
     return Math.abs(getGyroError(0.0)) < 0.0005;
   }
-
+  /**
+   * if the command becomes interrupted, the robot goes back to regular drive
+   */
   @Override
   public void end(boolean interrupted) {
     m_drivetrain.driveFromSpeeds(new ChassisSpeeds(), false);
@@ -59,7 +69,7 @@ public class TurnOnField extends CommandBase {
   }
   
   /**
-   * Get the percent angle error but with limit at 5% and -5% for speed reasons
+   * Get the percent angle error but with limit at 5% and -5% for so the robot doesnt go to slow, might have to make into PID if I want to make it faster
    * @param targetAngle 
    * @return percent angle error of the drivebase but with a limit
    */
