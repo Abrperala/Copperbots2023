@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.DriveConstants.*;
+import edu.wpi.first.math.MathUtil;
 
 /** Represents a swerve drive style drivetrain. */
 public class Drivetrain extends SubsystemBase { 
@@ -146,6 +147,10 @@ public class Drivetrain extends SubsystemBase {
   }
   public void resetGyro() {
     m_gyro.reset();
+  }
+
+  public double getGyroPos() {
+    return MathUtil.inputModulus(robotRotation2d().getDegrees(), 0, 360);
   }
 
   @Override
