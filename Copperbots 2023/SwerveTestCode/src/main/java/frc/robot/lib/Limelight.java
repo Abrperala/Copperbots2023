@@ -5,7 +5,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Notifier;
 import frc.robot.lib.ControlMode.*;
-import java.util.function.DoubleSupplier;
 /**
 *   Lime Light Class was started by Corey Applegate of Team 3244
 *   Granite City Gearheads. We Hope you Enjoy the Lime Light

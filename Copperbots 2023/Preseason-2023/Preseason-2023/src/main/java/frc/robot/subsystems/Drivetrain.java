@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
-
+import edu.wpi.first.math.util.Units;
 import com.kauailabs.navx.frc.AHRS;
-//import edu.wpi.first.wpilibj.CounterBase;
-//import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.CounterBase;
+import edu.wpi.first.wpilibj.Encoder;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -32,14 +32,17 @@ public class Drivetrain extends SubsystemBase {
   
   // Declares and initializes the Encoders
   // Parameters are Roborio port 1, Roborio port 2, invert direction, and Encoding Rate
- /* private final Encoder rightEncoder = new Encoder(2, 3, false, CounterBase.EncodingType.k4X);
-  private final Encoder leftEncoder = new Encoder(0, 1, false, CounterBase.EncodingType.k4X); */
- 
+  private final Encoder rightEncoder = new Encoder(2, 3, false, CounterBase.EncodingType.k4X);
+  private final Encoder leftEncoder = new Encoder(0, 1, true, CounterBase.EncodingType.k4X); 
+
   // Declares and initializes the Differential Drive 
   final DifferentialDrive drive = new DifferentialDrive(leftMotor, rightMotor);
 
   public Drivetrain() {
   navx.reset();
+  // sets the encoders to measure in feet (one encoder unit = 1 foot) (I think math works)
+  rightEncoder.setDistancePerPulse( (2.0 * Math.PI / 4096.0) * (12 / (2 * Math.PI * 4)));
+  leftEncoder.setDistancePerPulse( (2.0 * Math.PI / 4096.0) * (12 / (2 * Math.PI * 4)));
   }
 /**
  * Methods to utilize the NavX 
@@ -64,6 +67,16 @@ public class Drivetrain extends SubsystemBase {
     return navx.getAngle();
   }
 
+  public void resetEncoders(){
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
+  public double getRightEncoderDistance(){
+   return rightEncoder.getDistance();
+  }
+  public double getLeftEncoderDistance(){
+    return leftEncoder.getDistance();
+   }
   // Creates the drive method makes the robot drive, change arcade to tank to change drive type
   public void drive(double left, double right) {
       drive.arcadeDrive(left, right);
@@ -75,6 +88,9 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pitch: ", getPitch());
     SmartDashboard.putNumber("Roll ", getRoll());
     SmartDashboard.putNumber("Yaw: ", getYaw());
-
+    SmartDashboard.putNumber("left encoder: ", leftEncoder.getDistance());
+    SmartDashboard.putNumber("right encoder ", rightEncoder.getDistance());
   }
+
+
 }

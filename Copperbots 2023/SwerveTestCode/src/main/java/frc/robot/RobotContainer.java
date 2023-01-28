@@ -6,12 +6,8 @@ package frc.robot;
 
 
 import frc.robot.commands.AlignWithPoles;
-import frc.robot.commands.Autos;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Joystick;
@@ -31,7 +27,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final LimelightSubsystem m_limelight = new LimelightSubsystem();
   private final Drivetrain m_drivetrain = new Drivetrain();
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
@@ -69,10 +64,6 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
-  }
 
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {

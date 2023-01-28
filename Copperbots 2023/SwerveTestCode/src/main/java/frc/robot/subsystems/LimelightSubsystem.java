@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import frc.robot.lib.Limelight;
-import frc.robot.lib.ControlMode.CamMode;
 import frc.robot.lib.ControlMode.LedMode;
 
 import static frc.robot.Constants.LimelightConstants.*;

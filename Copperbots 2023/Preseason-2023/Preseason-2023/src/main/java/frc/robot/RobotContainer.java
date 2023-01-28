@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Balance;
+import frc.robot.commands.GetOnChargeStation;
 import frc.robot.commands.StickDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Piston;
@@ -53,5 +54,7 @@ public class RobotContainer {
       new JoystickButton(stick, 1).onTrue(new Balance(m_drivetrain));
       //makes the X button reset the Gyro
       new JoystickButton(stick, 2).onTrue((new InstantCommand(m_drivetrain::zeroGyro)));
+      //makes the ______ button drive the robot one foot
+      new JoystickButton(stick, 3).onTrue(new GetOnChargeStation(m_drivetrain));
     }
 }
