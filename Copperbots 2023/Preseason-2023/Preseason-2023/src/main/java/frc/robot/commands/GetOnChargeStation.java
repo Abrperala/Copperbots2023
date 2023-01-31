@@ -3,11 +3,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
-/**
- * Command to make the tankdrive robot automatically balance on the charge station, 
- */
 public class GetOnChargeStation extends CommandBase{
+  TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(10, 10);
+  ProfiledPIDController pid = new ProfiledPIDController(.15, 0, 0, constraints);
 
   private final Drivetrain m_drivetrain;
 
@@ -24,14 +25,14 @@ public class GetOnChargeStation extends CommandBase{
 
   @Override
   public void execute() { 
-    m_drivetrain.drive(0, -0.4);
+    m_drivetrain.drive(0, -pid.calculate(m_drivetrain.getRightEncoderDistance(), 3));
   }
 
  
   @Override
   public boolean isFinished(){
     boolean status = false;
-    if (m_drivetrain.getRightEncoderDistance() >= 1) {
+    if (m_drivetrain.getRightEncoderDistance() >= 5) {
     status = true;
   }
   return status;
