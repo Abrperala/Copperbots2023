@@ -58,7 +58,8 @@ addRequirements(m_drivetrain);
    */
   @Override
   public boolean isFinished(){
-    return Math.abs(error) < .5;
+    //return Math.abs(error) < .4;
+    return false;
   }
 
 

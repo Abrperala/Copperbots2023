@@ -41,7 +41,7 @@ public class Drivetrain extends SubsystemBase {
   navx.reset();
   // sets the encoders to measure in feet (one encoder unit = 1 foot) (I think math works)
   rightEncoder.setDistancePerPulse( (2.0 * Math.PI / 4096.0) * (12 / ( Math.PI * 7.75)));
-  leftEncoder.setDistancePerPulse( (2.0 * Math.PI / 4096.0) * (12 / ( Math.PI * 7.75)));
+  leftEncoder.setDistancePerPulse (2.0 * Math.PI / 3276) ;//* (12 / ( Math.PI * 7.75)));
   }
 /**
  * Methods to utilize the NavX 
