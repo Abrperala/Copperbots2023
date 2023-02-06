@@ -34,7 +34,6 @@ public class SwerveModule {
 
   private double turn_offset;
 
-
   double encUnitMeters = 2 * Math.PI * kWheelRadius / kDistEncoderResolution / 6.75;
   private final CANCoder m_turningEncoder;
 
@@ -88,8 +87,6 @@ public class SwerveModule {
     this.turn_offset = turn_offset;
     this.driveMotorInverted = driveMotorInverted;
 
-
-
     m_driveMotor.setInverted(this.driveMotorInverted);
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
@@ -105,7 +102,6 @@ public class SwerveModule {
     m_driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.75));
     m_turningMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 30, 35, 0.5));
     m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 35, 0.5));
-
 
     // Set the distance (in this case, angle) per pulse for the turning encoder.
     // This is the the angle through an entire rotation (2 * pi) divided by the
@@ -138,7 +134,6 @@ public class SwerveModule {
 
     m_driveFeedforward = new SimpleMotorFeedforward(drive_kS, drive_kV, drive_kA); // kS, kV, kA
     m_turnFeedforward = new SimpleMotorFeedforward(turn_kS, turn_kV, turn_kA); // kS, kV, kA
-
   }
 
   /**
@@ -149,6 +144,7 @@ public class SwerveModule {
   public SwerveModuleState getState() {
     return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity() * 10 * encUnitMeters, new Rotation2d(getTurnAngle()));
   }
+
 /**
  * Returns the current position of the module.
  * 
@@ -157,7 +153,6 @@ public class SwerveModule {
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
       m_driveMotor.getSelectedSensorPosition() * encUnitMeters, new Rotation2d(getTurnAngle()));
-    
   }
 
   /**
@@ -178,6 +173,7 @@ public class SwerveModule {
 
   /**
    * Get drive motor vel
+   * 
    * @return drive motor velocity (in raw units)
    */
   public double getDriveSpeed() {

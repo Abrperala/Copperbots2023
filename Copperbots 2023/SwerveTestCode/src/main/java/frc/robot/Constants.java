@@ -79,6 +79,7 @@ public final class Constants {
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 2;
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 1;
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 1;
+    //og value 216.65
     public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(216.65); 
     public static final double FRONT_LEFT_OFFSET_DEGREES = 216.65;
     
@@ -96,6 +97,7 @@ public final class Constants {
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 4;
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 3;
     public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 2;
+    // og 80.42
     public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(80.42); 
     public static final double FRONT_RIGHT_OFFSET_DEGREES = 80.42;
     
@@ -113,8 +115,11 @@ public final class Constants {
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 8;
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 7;
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 4;
+    
+    // og 137.81
     public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(137.81); 
     public static final double BACK_LEFT_OFFSET_DEGREES = 137.81;
+    
     // PID constants for Back Left Module
     public static final double BACK_LEFT_MODULE_DRIVE_KP = 0.1; // FIXME: get from sysid values
     public static final double BACK_LEFT_MODULE_DRIVE_KI = 0.0; // FIXME: get from sysid values
@@ -129,6 +134,8 @@ public final class Constants {
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 6;
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 5;
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 3;
+   
+    // og 272.55
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(272.55);
     public static final double BACK_RIGHT_OFFSET_DEGREES = 272.55;
 
