@@ -86,11 +86,11 @@ public final class Constants {
     // PID constants for Front Left Module
     public static final double FRONT_LEFT_MODULE_DRIVE_KP = 0.1; // FIXME: get from sysid values
     public static final double FRONT_LEFT_MODULE_DRIVE_KI = 0.0; // FIXME: get from sysid values
-    public static final double FRONT_LEFT_MODULE_DRIVE_KD = 0.01; // FIXME: get from sysid values
+    public static final double FRONT_LEFT_MODULE_DRIVE_KD = 0.12; // FIXME: get from sysid values
     public static final double FRONT_LEFT_MODULE_DRIVE_KF = 0.0; // FIXME: get from sysid values
-    public static final double FRONT_LEFT_MODULE_TURN_KP = 0.2; // FIXME: get from sysid values
-    public static final double FRONT_LEFT_MODULE_TURN_KI = 0.0; // FIXME: get from sysid values
-    public static final double FRONT_LEFT_MODULE_TURN_KD = 0.1; // FIXME: get from sysid values
+    public static final double FRONT_LEFT_MODULE_TURN_KP = 0.25; // FIXME: get from sysid values
+    public static final double FRONT_LEFT_MODULE_TURN_KI = 0.15; // FIXME: get from sysid values
+    public static final double FRONT_LEFT_MODULE_TURN_KD = 0.2; // FIXME: get from sysid values
     public static final double FRONT_LEFT_MODULE_TURN_KF = 0.0; // FIXME: get from sysid values
 
     // front right module

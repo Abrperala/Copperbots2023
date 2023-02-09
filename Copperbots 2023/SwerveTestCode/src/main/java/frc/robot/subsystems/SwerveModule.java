@@ -88,6 +88,7 @@ public class SwerveModule {
     this.driveMotorInverted = driveMotorInverted;
 
     m_driveMotor.setInverted(this.driveMotorInverted);
+    m_turningMotor.setInverted(true);
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
 
@@ -95,7 +96,7 @@ public class SwerveModule {
     m_turningMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 40);
     m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 40);
     m_driveMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 20);
-    m_turningMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 20);
+    m_turningMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 80);
 
     // Set current limits for drive and turn motors
     m_driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40, 45, 0.75));
@@ -117,13 +118,13 @@ public class SwerveModule {
     m_turningPIDController =
       new ProfiledPIDController(
           turn_kP,
-          0,
+          0.1,
           turn_kD,
           new TrapezoidProfile.Constraints(
             5.5 * Math.PI, 3.5 * Math.PI));
               // Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
-    m_turningPIDController.setTolerance(0.005);
+    m_turningPIDController.setTolerance(0.05);
     
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.

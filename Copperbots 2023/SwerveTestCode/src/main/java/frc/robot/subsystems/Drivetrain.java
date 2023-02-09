@@ -32,16 +32,16 @@ public class Drivetrain extends SubsystemBase {
           Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0) * 0.9;
 
   private final SwerveModule m_frontLeft = new SwerveModule(FRONT_LEFT_MODULE_DRIVE_MOTOR, FRONT_LEFT_MODULE_STEER_MOTOR,
-    FRONT_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -103.87, 1, 0.02, 0.5, 0.03, 0.004); //kP is +.3 kS is +0.2
+    FRONT_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -79.87, 4.599, 0.01, 0.535, 0.228, 0.006); //kP is +.3 kS is +0.2
 
   private final SwerveModule m_frontRight = new SwerveModule(FRONT_RIGHT_MODULE_DRIVE_MOTOR, FRONT_RIGHT_MODULE_STEER_MOTOR, 
-    FRONT_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, 99.08, 1, 0.02, 0.5, 0.03, 0.004); //kP is +.3
+    FRONT_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -80.92, 4.732, 0.01, 0.500, 0.236, 0.007);
 
   private final SwerveModule m_backLeft = new SwerveModule(BACK_LEFT_MODULE_DRIVE_MOTOR, BACK_LEFT_MODULE_STEER_MOTOR, 
-    BACK_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -235.37, 1, 0.02, 0.5, 0.03, 0.004); //kP is +1
+    BACK_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -235.37, 4.954, 0.01, 0.511, 0.236, 0.007); //kP is +1
 
   private final SwerveModule m_backRight = new SwerveModule(BACK_RIGHT_MODULE_DRIVE_MOTOR, BACK_RIGHT_MODULE_STEER_MOTOR, 
-    BACK_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -227.74, 1, 0.02, 0.5, 0.03, 0.004); //kP is +1
+    BACK_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -227.74, 4.900, 0.01, 0.584, 0.232, 0.007); //kP is +1
 
   // private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -168,9 +168,9 @@ public class Drivetrain extends SubsystemBase {
     // Update the odometry in the periodic block -- duh @me
     updateOdometry();
 
-      SmartDashboard.putNumber("Front Right encoder", m_frontRight.getTurnAngle());
-      SmartDashboard.putNumber("Front Left encoder", m_frontLeft.getTurnAngle());
-      SmartDashboard.putNumber("Back Right encoder", m_backRight.getTurnAngle());
-      SmartDashboard.putNumber("Back Left encoder", m_backLeft.getTurnAngle());
+      SmartDashboard.putNumber("Front Left encoder", m_frontLeft.getTurnAngle() * (180/Math.PI));
+      SmartDashboard.putNumber("Front Right encoder", m_frontRight.getTurnAngle() * (180/Math.PI));
+      SmartDashboard.putNumber("Back Left encoder", m_backLeft.getTurnAngle() * (180/Math.PI));
+      SmartDashboard.putNumber("Back Right encoder", m_backRight.getTurnAngle() * (180/Math.PI));
   }
 }
