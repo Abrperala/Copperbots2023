@@ -41,7 +41,7 @@ public class Drivetrain extends SubsystemBase {
     BACK_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -235.37, 4.954, 0.01, 0.511, 0.236, 0.007); //kP is +1
 
   private final SwerveModule m_backRight = new SwerveModule(BACK_RIGHT_MODULE_DRIVE_MOTOR, BACK_RIGHT_MODULE_STEER_MOTOR, 
-    BACK_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -227.74, 4.900, 0.01, 0.584, 0.232, 0.007); //kP is +1
+    BACK_RIGHT_MODULE_STEER_ENCODER, true, 1.993, 0.332, 2.200, 0.304, -227.74, 4.900, 0.01, 0.584, 0.232, 0.007); //kP is +1
 
   // private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -155,6 +155,18 @@ public class Drivetrain extends SubsystemBase {
   public double getGyroPos() {
     return MathUtil.inputModulus(robotRotation2d().getDegrees(), 0, 360);
   }
+  public double getYaw() {
+    return m_gyro.getYaw();
+  }
+  public double getPitch() {
+    return m_gyro.getPitch();
+  }
+  public double getRoll() {
+    return m_gyro.getRoll();
+  }
+  public double getAngle() {
+    return m_gyro.getAngle();
+  }
 
   @Override
   public void periodic() {
@@ -172,5 +184,7 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Front Right encoder", m_frontRight.getTurnAngle() * (180/Math.PI));
       SmartDashboard.putNumber("Back Left encoder", m_backLeft.getTurnAngle() * (180/Math.PI));
       SmartDashboard.putNumber("Back Right encoder", m_backRight.getTurnAngle() * (180/Math.PI));
-  }
+      SmartDashboard.putNumber("Gyro Angle", m_gyro.getAngle());
+ 
+    }
 }
