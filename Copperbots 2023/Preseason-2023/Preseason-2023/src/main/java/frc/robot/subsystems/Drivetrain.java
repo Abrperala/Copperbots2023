@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -19,6 +22,9 @@ public class Drivetrain extends SubsystemBase {
 
   private final AHRS navx = new AHRS(SPI.Port.kMXP);
 
+   AddressableLED m_led = new AddressableLED(0);
+   AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(60);
+  
   // Declares and initializes the Sparkmax Motor Controllers
   final CANSparkMax left1 = new CANSparkMax(4, MotorType.kBrushless);
   final CANSparkMax left2 = new CANSparkMax(3, MotorType.kBrushless);
@@ -39,6 +45,15 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain() {
   navx.reset();
+  m_led.setLength(m_ledBuffer.getLength());
+  m_led.setData(m_ledBuffer);
+  m_led.start();
+
+  for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+    m_ledBuffer.setRGB(i, 0, 255, 0);
+ }
+ 
+ m_led.setData(m_ledBuffer);
   // sets the encoders to measure in feet (one encoder unit = 1 foot) (I think math works)
   rightEncoder.setDistancePerPulse( (2.0 * Math.PI / 4096.0) * (12 / ( Math.PI * 7.75)));
   leftEncoder.setDistancePerPulse (2.0 * Math.PI / 3276) ;//* (12 / ( Math.PI * 7.75)));
@@ -81,6 +96,28 @@ public class Drivetrain extends SubsystemBase {
       drive.arcadeDrive(left, right);
 
   }
+
+  public void RedLight(){
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      m_ledBuffer.setRGB(i, 255, 0, 0);
+   }
+   m_led.setData(m_ledBuffer);
+  }
+
+   public void GreenLight(){
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      m_ledBuffer.setRGB(i, 0, 255, 0);
+   }
+   m_led.setData(m_ledBuffer);
+  }
+   public void BlueLight(){
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      m_ledBuffer.setRGB(i, 0, 0, 255);
+   }
+   m_led.setData(m_ledBuffer);
+   
+  }
+
 
   @Override
   public void periodic(){

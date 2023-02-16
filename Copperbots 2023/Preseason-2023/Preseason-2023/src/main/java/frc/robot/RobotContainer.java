@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Balance;
+import frc.robot.commands.EncoderTest;
 import frc.robot.commands.GetOnChargeStation;
 import frc.robot.commands.StickDrive;
 import frc.robot.subsystems.Drivetrain;
@@ -56,8 +57,8 @@ public class RobotContainer {
       // makes the Square button use the balance command 
       new JoystickButton(stick, ButtonBindings.SQUARE).onTrue(new Balance(m_drivetrain));
       //makes the X button reset the Gyro
-      new JoystickButton(stick, ButtonBindings.X).onTrue((new InstantCommand(m_drivetrain::zeroGyro)));
-      //makes the circle button drive the robot three wheel rotaations
+      new JoystickButton(stick, ButtonBindings.X).onTrue(new EncoderTest(m_drivetrain));
+      //makes the circle button drive the robot three wheel rota%tions
       new JoystickButton(stick, ButtonBindings.CIRCLE).onTrue(new GetOnChargeStation(m_drivetrain));
      //makes the Triangle button drive the robot Three wheel rotations and balance
       new JoystickButton(stick, ButtonBindings.TRIANGLE).onTrue(new SequentialCommandGroup(new GetOnChargeStation(m_drivetrain), new Balance(m_drivetrain)));

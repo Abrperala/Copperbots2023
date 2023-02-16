@@ -19,19 +19,22 @@ public class EncoderTest extends CommandBase {
 @Override
 public void initialize(){
 m_drivetrain.resetEncoders();
+m_drivetrain.RedLight();
+System.out.println("hi");
 pid.reset(0);
 }
 
 @Override
 public void execute() { 
   m_drivetrain.drive(0, -pid.calculate(m_drivetrain.getLeftEncoderDistance(), 4));
+  
 }
 
 
 @Override
 public boolean isFinished(){
   boolean status = false;
-  if (m_drivetrain.getLeftEncoderDistance() >= 4) {
+  if (m_drivetrain.getLeftEncoderDistance() >= 3) {
   status = true;
 }
 return status;
@@ -41,6 +44,7 @@ return status;
 @Override
 public void end(boolean interrupted) {
   m_drivetrain.drive(0.0, 0.0);
+  m_drivetrain.GreenLight();
 }
 
 }
