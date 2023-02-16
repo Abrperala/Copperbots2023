@@ -6,14 +6,19 @@ package frc.robot;
 
 
 import frc.robot.commands.AlignWithPoles;
+import frc.robot.commands.Balance;
 import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DriveUpRamp;
+import frc.robot.commands.DriveUpRampBackwards;
 import frc.robot.commands.TurnOnField;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -22,6 +27,7 @@ import frc.robot.commands.TurnOnField;
  */
 public class RobotContainer {
   
+
   private final Joystick m_driver = new Joystick(0);
 
   // The robot's subsystems and commands are defined here...
@@ -58,7 +64,16 @@ public class RobotContainer {
     new JoystickButton(m_driver, 14).onTrue(new TurnOnField(m_drivetrain));
     
     new JoystickButton(m_driver, 1).onTrue(new AlignWithPoles(m_drivetrain, m_limelight));
+ 
+    new JoystickButton(m_driver, 2).onTrue(new Balance(m_drivetrain));
+
+    new JoystickButton(m_driver, 3).onTrue(new DriveUpRamp(m_drivetrain));
+
+    new JoystickButton(m_driver, 4).onTrue(new DriveUpRampBackwards(m_drivetrain));
+
+    new JoystickButton(m_driver, 5).onTrue(new SequentialCommandGroup(new DriveUpRamp(m_drivetrain), new Balance(m_drivetrain)));
   }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

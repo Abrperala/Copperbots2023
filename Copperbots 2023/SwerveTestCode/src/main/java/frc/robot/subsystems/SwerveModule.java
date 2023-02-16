@@ -34,7 +34,6 @@ public class SwerveModule {
 
   private double turn_offset;
 
-
   double encUnitMeters = 2 * Math.PI * kWheelRadius / kDistEncoderResolution / 6.75;
   private final CANCoder m_turningEncoder;
 
@@ -88,9 +87,8 @@ public class SwerveModule {
     this.turn_offset = turn_offset;
     this.driveMotorInverted = driveMotorInverted;
 
-
-
     m_driveMotor.setInverted(this.driveMotorInverted);
+    m_turningMotor.setInverted(true);
     m_driveMotor.setNeutralMode(NeutralMode.Brake);
     m_turningMotor.setNeutralMode(NeutralMode.Brake);
 
@@ -98,14 +96,13 @@ public class SwerveModule {
     m_turningMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 40);
     m_turningEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 40);
     m_driveMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 20);
-    m_turningMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 20);
+    m_turningMotor.setStatusFramePeriod(StatusFrame.Status_1_General, 80);
 
     // Set current limits for drive and turn motors
     m_driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40, 45, 0.75));
     m_driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 45, 0.75));
     m_turningMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 30, 35, 0.5));
     m_turningMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 35, 0.5));
-
 
     // Set the distance (in this case, angle) per pulse for the turning encoder.
     // This is the the angle through an entire rotation (2 * pi) divided by the
@@ -121,13 +118,13 @@ public class SwerveModule {
     m_turningPIDController =
       new ProfiledPIDController(
           turn_kP,
-          0,
+          0.1,
           turn_kD,
           new TrapezoidProfile.Constraints(
             5.5 * Math.PI, 3.5 * Math.PI));
               // Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
-    m_turningPIDController.setTolerance(0.005);
+    m_turningPIDController.setTolerance(0.05);
     
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
@@ -138,7 +135,6 @@ public class SwerveModule {
 
     m_driveFeedforward = new SimpleMotorFeedforward(drive_kS, drive_kV, drive_kA); // kS, kV, kA
     m_turnFeedforward = new SimpleMotorFeedforward(turn_kS, turn_kV, turn_kA); // kS, kV, kA
-
   }
 
   /**
@@ -149,6 +145,7 @@ public class SwerveModule {
   public SwerveModuleState getState() {
     return new SwerveModuleState(m_driveMotor.getSelectedSensorVelocity() * 10 * encUnitMeters, new Rotation2d(getTurnAngle()));
   }
+
 /**
  * Returns the current position of the module.
  * 
@@ -157,7 +154,6 @@ public class SwerveModule {
   public SwerveModulePosition getPosition() {
     return new SwerveModulePosition(
       m_driveMotor.getSelectedSensorPosition() * encUnitMeters, new Rotation2d(getTurnAngle()));
-    
   }
 
   /**
@@ -178,6 +174,7 @@ public class SwerveModule {
 
   /**
    * Get drive motor vel
+   * 
    * @return drive motor velocity (in raw units)
    */
   public double getDriveSpeed() {

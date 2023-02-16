@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.math.MathUtil;
@@ -24,23 +25,23 @@ import edu.wpi.first.math.MathUtil;
 public class Drivetrain extends SubsystemBase { 
 
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
-  SdsModuleConfigurations.MK4_L2.getDriveReduction() *
-  SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI * 1.2;
+  SdsModuleConfigurations.MK4I_L2.getDriveReduction() *
+  SdsModuleConfigurations.MK4I_L2.getWheelDiameter() * Math.PI * 1.2;
 
   public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
           Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0) * 0.9;
 
   private final SwerveModule m_frontLeft = new SwerveModule(FRONT_LEFT_MODULE_DRIVE_MOTOR, FRONT_LEFT_MODULE_STEER_MOTOR,
-    FRONT_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -214.52, 5.0, 0.02, 0.5, 0.03, 0.004); //kP is +.3 kS is +0.2
+    FRONT_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -79.87, 4.599, 0.01, 0.535, 0.228, 0.006); //kP is +.3 kS is +0.2
 
   private final SwerveModule m_frontRight = new SwerveModule(FRONT_RIGHT_MODULE_DRIVE_MOTOR, FRONT_RIGHT_MODULE_STEER_MOTOR, 
-    FRONT_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -79.78, 5.0, 0.02, 0.5, 0.03, 0.004); //kP is +.3
+    FRONT_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -80.92, 4.732, 0.01, 0.500, 0.236, 0.007);
 
   private final SwerveModule m_backLeft = new SwerveModule(BACK_LEFT_MODULE_DRIVE_MOTOR, BACK_LEFT_MODULE_STEER_MOTOR, 
-    BACK_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -138.51, 5.75, 0.02, 0.5, 0.03, 0.004); //kP is +1
+    BACK_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -235.37, 4.954, 0.01, 0.511, 0.236, 0.007); //kP is +1
 
   private final SwerveModule m_backRight = new SwerveModule(BACK_RIGHT_MODULE_DRIVE_MOTOR, BACK_RIGHT_MODULE_STEER_MOTOR, 
-    BACK_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -270.45, 5.75, 0.02, 0.5, 0.03, 0.004); //kP is +1
+    BACK_RIGHT_MODULE_STEER_ENCODER, true, 1.993, 0.332, 2.200, 0.304, -227.74, 4.900, 0.01, 0.584, 0.232, 0.007); //kP is +1
 
   // private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -142,15 +143,29 @@ public class Drivetrain extends SubsystemBase {
   public double getGyroAngle() {
     return -1.0 * m_gyro.getAngle();
   }
+
   public Rotation2d robotRotation2d() {
     return new Rotation2d(Math.toRadians(getGyroAngle()));
   }
+  
   public void resetGyro() {
     m_gyro.reset();
   }
 
   public double getGyroPos() {
     return MathUtil.inputModulus(robotRotation2d().getDegrees(), 0, 360);
+  }
+  public double getYaw() {
+    return m_gyro.getYaw();
+  }
+  public double getPitch() {
+    return m_gyro.getPitch();
+  }
+  public double getRoll() {
+    return m_gyro.getRoll();
+  }
+  public double getAngle() {
+    return m_gyro.getAngle();
   }
 
   @Override
@@ -165,6 +180,11 @@ public class Drivetrain extends SubsystemBase {
     // Update the odometry in the periodic block -- duh @me
     updateOdometry();
 
-  }
-
+      SmartDashboard.putNumber("Front Left encoder", m_frontLeft.getTurnAngle() * (180/Math.PI));
+      SmartDashboard.putNumber("Front Right encoder", m_frontRight.getTurnAngle() * (180/Math.PI));
+      SmartDashboard.putNumber("Back Left encoder", m_backLeft.getTurnAngle() * (180/Math.PI));
+      SmartDashboard.putNumber("Back Right encoder", m_backRight.getTurnAngle() * (180/Math.PI));
+      SmartDashboard.putNumber("Gyro Angle", m_gyro.getAngle());
+ 
+    }
 }

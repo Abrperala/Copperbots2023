@@ -16,4 +16,14 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class ButtonBindings {
+    public static final int SQUARE = 1;
+    public static final int X = 2;
+    public static final int CIRCLE = 3;
+    public static final int TRIANGLE = 4;
+
+
+  }
+
 }
