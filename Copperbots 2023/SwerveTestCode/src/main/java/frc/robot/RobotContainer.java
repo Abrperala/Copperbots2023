@@ -6,9 +6,13 @@ package frc.robot;
 
 
 import frc.robot.commands.AlignWithPoles;
+import frc.robot.commands.ArmToPlayerStation;
 import frc.robot.commands.Balance;
+import frc.robot.commands.BottomIntakeGoBrrrrrrr;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.TopRoller;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -18,9 +22,10 @@ import frc.robot.subsystems.Intake;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveUpRamp;
 import frc.robot.commands.DriveUpRampBackwards;
-import frc.robot.commands.IntakeGoBrrrrrrr;
+import frc.robot.commands.TopIntakeGoBrrrrrrr;
 import frc.robot.commands.TurnOnField;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.BottomRoller;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -37,6 +42,8 @@ public class RobotContainer {
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Arm m_arm = new Arm();
   private final Intake m_intake = new Intake();
+  private final TopRoller m_topRoller = new TopRoller();
+  private final BottomRoller m_bottomRoller = new BottomRoller();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -78,11 +85,14 @@ public class RobotContainer {
 
     new JoystickButton(m_driver, 5).onTrue(new SequentialCommandGroup(new DriveUpRamp(m_drivetrain), new Balance(m_drivetrain)));
   
-    //new JoystickButton(m_operator, 5)
-   // .onTrue(new InstantCommand(m_arm::togglePiston));
-  
-    new JoystickButton(m_operator, 6).whileTrue(new IntakeGoBrrrrrrr(m_intake));
+    new JoystickButton(m_operator, 14).onTrue(new InstantCommand(m_arm::togglePiston));
+
+    new JoystickButton(m_operator, 6).whileTrue(new TopIntakeGoBrrrrrrr(m_topRoller));
+
+    new JoystickButton(m_operator, 5).whileTrue(new ParallelCommandGroup(new TopIntakeGoBrrrrrrr(m_topRoller), new BottomIntakeGoBrrrrrrr(m_bottomRoller)));
   }
+
+  
 
 
   /**

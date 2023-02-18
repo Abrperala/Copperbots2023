@@ -8,7 +8,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 public class ArmToPlayerStation extends CommandBase {
   
   TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(1, 1);
-  ProfiledPIDController pid = new ProfiledPIDController(.1, 0.1, 0, constraints);
+  ProfiledPIDController pid = new ProfiledPIDController(.1, 0, 0, constraints);
  
   private final Arm m_arm;
 

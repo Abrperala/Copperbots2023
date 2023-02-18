@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
@@ -15,18 +14,19 @@ public class Arm extends SubsystemBase {
 
 final CANSparkMax arm1 = new CANSparkMax(13, MotorType.kBrushless);
 final CANSparkMax arm2 = new CANSparkMax(14, MotorType.kBrushless);
-final MotorControllerGroup armMotorControllerGroup = new MotorControllerGroup(arm1, arm2);
-private final Encoder armEncoder = new Encoder(8, 7, false, CounterBase.EncodingType.k4X);
+private final Encoder armEncoder = new Encoder(8, 7, true, CounterBase.EncodingType.k4X);
 
-private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 10, 11);
+private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 9);
 public boolean pistonState;
 
 public Arm(){
-  armEncoder.setDistancePerPulse(360/4096.0);
+  armEncoder.setDistancePerPulse(360/2048.0);
+  armEncoder.reset();
 }
 
 public void setArmPosition(double speed){
-armMotorControllerGroup.set(speed);
+arm1.set(speed);
+arm2.set(-speed);
 }
 
 public void resetEncoder(){

@@ -1,17 +1,17 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.TopRoller;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class IntakeGoBrrrrrrr extends CommandBase{
+public class TopIntakeGoBrrrrrrr extends CommandBase{
 
  
-  private final Intake m_intake;
+  private final TopRoller m_topRoller;
 
-  public IntakeGoBrrrrrrr(Intake intake) {
-    this.m_intake = intake;
+  public TopIntakeGoBrrrrrrr(TopRoller topRoller) {
+    this.m_topRoller = topRoller;
     
-    addRequirements(m_intake);
+    addRequirements(m_topRoller);
   }
 
 
@@ -21,7 +21,7 @@ public class IntakeGoBrrrrrrr extends CommandBase{
 
   @Override
   public void execute() {
-  m_intake.rollIntake(1);
+  m_topRoller.rollTopIntake(1);
   }
   
 
@@ -36,6 +36,6 @@ public class IntakeGoBrrrrrrr extends CommandBase{
 
   @Override
   public void end(boolean interrupted) {
-  m_intake.rollIntake(0);
+  m_topRoller.rollTopIntake(0);
   }
 }
