@@ -18,10 +18,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveUpRamp;
 import frc.robot.commands.DriveUpRampBackwards;
+import frc.robot.commands.HandControl;
 import frc.robot.commands.TopIntakeGoBrrrrrrr;
 import frc.robot.commands.TurnOnField;
 import frc.robot.subsystems.Arm;
@@ -44,6 +46,7 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final TopRoller m_topRoller = new TopRoller();
   private final BottomRoller m_bottomRoller = new BottomRoller();
+  private final Hand m_hand = new Hand();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -55,6 +58,8 @@ public class RobotContainer {
       () -> -modifyAxis(m_driver.getRawAxis(2)) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
       true
 ));
+
+  m_hand.setDefaultCommand(new HandControl(m_hand, ()->m_operator.getRawAxis(1)));
 
     // Configure the trigger bindings
     configureBindings();
@@ -90,6 +95,8 @@ public class RobotContainer {
     new JoystickButton(m_operator, 6).whileTrue(new TopIntakeGoBrrrrrrr(m_topRoller));
 
     new JoystickButton(m_operator, 5).whileTrue(new ParallelCommandGroup(new TopIntakeGoBrrrrrrr(m_topRoller), new BottomIntakeGoBrrrrrrr(m_bottomRoller)));
+ 
+    new JoystickButton(m_operator, 1).onTrue(new ArmToPlayerStation(m_arm));
   }
 
   
