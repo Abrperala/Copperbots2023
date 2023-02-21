@@ -22,6 +22,7 @@ public boolean pistonState;
 public Arm(){
   armEncoder.setDistancePerPulse(360/2048.0);
   armEncoder.reset();
+  retract();
 }
 
 public void setArmPosition(double speed){

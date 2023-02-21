@@ -6,7 +6,10 @@ package frc.robot;
 
 
 import frc.robot.commands.AlignWithPoles;
+import frc.robot.commands.ArmToIndex;
 import frc.robot.commands.ArmToPlayerStation;
+import frc.robot.commands.ArmToSecondNode;
+import frc.robot.commands.ArmToThirdNode;
 import frc.robot.commands.Balance;
 import frc.robot.commands.BottomIntakeGoBrrrrrrr;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -76,10 +79,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     
-    new JoystickButton(m_driver, 10).onTrue(new InstantCommand(m_drivetrain::resetGyro));
-
-    new JoystickButton(m_driver, 14).onTrue(new TurnOnField(m_drivetrain));
-    
+    //Driver Button Bindings
     new JoystickButton(m_driver, 1).onTrue(new AlignWithPoles(m_drivetrain, m_limelight));
  
     new JoystickButton(m_driver, 2).onTrue(new Balance(m_drivetrain));
@@ -90,13 +90,25 @@ public class RobotContainer {
 
     new JoystickButton(m_driver, 5).onTrue(new SequentialCommandGroup(new DriveUpRamp(m_drivetrain), new Balance(m_drivetrain)));
   
+    new JoystickButton(m_driver, 10).onTrue(new InstantCommand(m_drivetrain::resetGyro));
+
+    new JoystickButton(m_driver, 14).onTrue(new TurnOnField(m_drivetrain));
+
+    //Operator Button Bindings
     new JoystickButton(m_operator, 14).onTrue(new InstantCommand(m_arm::togglePiston));
 
     new JoystickButton(m_operator, 6).whileTrue(new TopIntakeGoBrrrrrrr(m_topRoller));
 
     new JoystickButton(m_operator, 5).whileTrue(new ParallelCommandGroup(new TopIntakeGoBrrrrrrr(m_topRoller), new BottomIntakeGoBrrrrrrr(m_bottomRoller)));
  
-    new JoystickButton(m_operator, 1).onTrue(new ArmToPlayerStation(m_arm));
+    new JoystickButton(m_operator, 1).onTrue(new ArmToIndex(m_arm));
+   
+    new JoystickButton(m_operator, 2).onTrue(new ArmToSecondNode(m_arm));
+
+    new JoystickButton(m_operator, 3).onTrue(new ArmToThirdNode(m_arm));
+
+    new JoystickButton(m_operator, 4).onTrue(new ArmToPlayerStation(m_arm));
+
   }
 
   
@@ -129,7 +141,6 @@ public class RobotContainer {
 
     return value;
   }
-//test
   }
 
 
