@@ -40,10 +40,11 @@ import frc.robot.subsystems.BottomRoller;
 public class RobotContainer {
   
 
-  private final Joystick m_driver = new Joystick(0);
-  private final Joystick m_operator = new Joystick(1);
-  // The robot's subsystems and commands are defined here...
-  private final LimelightSubsystem m_limelight = new LimelightSubsystem();
+  private final Joystick m_driver = new Joystick(0); //port:0 is driver's controller
+  private final Joystick m_operator = new Joystick(1); //port:1 is operator's controller
+  // The robot's subsystems are defined here...
+  //creates object of subsystem to be used for button commands
+  private final LimelightSubsystem m_limelight = new LimelightSubsystem(); //
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Arm m_arm = new Arm();
   private final Intake m_intake = new Intake();
@@ -54,6 +55,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+    // sets the drivetrain default to be controlled by the axis of the driver controller
     m_drivetrain.setDefaultCommand(new DriveCommand(
       m_drivetrain,
       () -> -modifyAxis(m_driver.getRawAxis(1)) * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
@@ -62,6 +64,7 @@ public class RobotContainer {
       true
 ));
 
+    // sets the hand to be controlled by the operator joystick
   m_hand.setDefaultCommand(new HandControl(m_hand, ()->m_operator.getRawAxis(1)));
 
     // Configure the trigger bindings
@@ -80,33 +83,49 @@ public class RobotContainer {
   private void configureBindings() {
     
     //Driver Button Bindings
+
+    // sets the driver controller square button to the command AlignWithPoles
     new JoystickButton(m_driver, 1).onTrue(new AlignWithPoles(m_drivetrain, m_limelight));
  
+    // sets the driver controller X button to the command Balance
     new JoystickButton(m_driver, 2).onTrue(new Balance(m_drivetrain));
 
+    // sets the driver controller circle button to the command DriveUpRamp
     new JoystickButton(m_driver, 3).onTrue(new DriveUpRamp(m_drivetrain));
 
+    // sets the driver controller triangle button to the command DriveUpRampBackwards
     new JoystickButton(m_driver, 4).onTrue(new DriveUpRampBackwards(m_drivetrain));
 
+     // sets the driver controller left bumper button to the commands DriveUpRamp and Balance
     new JoystickButton(m_driver, 5).onTrue(new SequentialCommandGroup(new DriveUpRamp(m_drivetrain), new Balance(m_drivetrain)));
   
+    // sets the driver controller options button to the command resetGyro
     new JoystickButton(m_driver, 10).onTrue(new InstantCommand(m_drivetrain::resetGyro));
 
+    // sets the driver controller center pad to the command TurnOnField  
     new JoystickButton(m_driver, 14).onTrue(new TurnOnField(m_drivetrain));
 
     //Operator Button Bindings
+    
+    // sets the operator controller center pad to the command togglePiston
     new JoystickButton(m_operator, 14).onTrue(new InstantCommand(m_arm::togglePiston));
 
+    // sets the operator controller right bumper to the command TopIntakeGoBrrrrrrr
     new JoystickButton(m_operator, 6).whileTrue(new TopIntakeGoBrrrrrrr(m_topRoller));
 
+    // sets the operator controller left bumper to the command TopIntakeGoBrrrrrrr and BottomINtakeGoBrrrrrrr
     new JoystickButton(m_operator, 5).whileTrue(new ParallelCommandGroup(new TopIntakeGoBrrrrrrr(m_topRoller), new BottomIntakeGoBrrrrrrr(m_bottomRoller)));
  
+    // sets the operator controller square button to the command ArmToInDex
     new JoystickButton(m_operator, 1).onTrue(new ArmToIndex(m_arm));
    
+    // sets the operator controller X button to the command ArmToSecondNode
     new JoystickButton(m_operator, 2).onTrue(new ArmToSecondNode(m_arm));
 
+    // sets the operator circle square button to the command ArmToThirdNode
     new JoystickButton(m_operator, 3).onTrue(new ArmToThirdNode(m_arm));
 
+    // sets the operator controller triangle button to the command ArmToPlayerStation
     new JoystickButton(m_operator, 4).onTrue(new ArmToPlayerStation(m_arm));
 
   }
