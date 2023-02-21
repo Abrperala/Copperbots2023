@@ -25,8 +25,8 @@ public Arm(){
 }
 
 public void setArmPosition(double speed){
-arm1.set(speed);
-arm2.set(-speed);
+  arm1.set(speed);
+  arm2.set(-speed);
 }
 
 public void resetEncoder(){
