@@ -38,13 +38,13 @@ public double getEncoderDistance(){
  return armEncoder.getDistance();
 }
   public void extend() {
-    m_DoubleSolenoid.set(Value.kForward);
-    pistonState = true;
+ m_DoubleSolenoid.set(Value.kForward);
+  pistonState = true;
 }
 
 public void retract() {
-    m_DoubleSolenoid.set(Value.kReverse);
-    pistonState = false;
+  m_DoubleSolenoid.set(Value.kReverse);
+  pistonState = false;
 }
 
 public void togglePiston() {
@@ -59,7 +59,7 @@ public void togglePiston() {
 
 @Override
  public void periodic(){
-  SmartDashboard.putNumber("arm encoder", armEncoder.getDistance());
+ SmartDashboard.putNumber("arm encoder", armEncoder.getDistance());
  }
 
 }

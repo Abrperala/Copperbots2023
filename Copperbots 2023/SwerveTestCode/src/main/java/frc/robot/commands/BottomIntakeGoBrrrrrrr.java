@@ -10,7 +10,6 @@ public class BottomIntakeGoBrrrrrrr extends CommandBase{
 
   public BottomIntakeGoBrrrrrrr(BottomRoller bottomRoller) {
     this.m_bottomRoller = bottomRoller;
-    
     addRequirements(m_bottomRoller);
   }
 

@@ -15,7 +15,6 @@ public class ArmToPlayerStation extends CommandBase {
 
   public ArmToPlayerStation(Arm arm) {
     this.m_arm = arm;
-    
     addRequirements(m_arm);
   }
 

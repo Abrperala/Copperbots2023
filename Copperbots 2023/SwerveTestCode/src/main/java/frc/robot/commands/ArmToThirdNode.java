@@ -11,7 +11,6 @@ public class ArmToThirdNode extends CommandBase{
 
   public ArmToThirdNode(Arm arm) {
     this.m_arm = arm;
-    
     addRequirements(m_arm);
   }
 

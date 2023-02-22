@@ -17,7 +17,6 @@ public class TurnOnField extends CommandBase {
 
   public TurnOnField(Drivetrain drivetrain) {
     this.m_drivetrain = drivetrain;
-
     addRequirements(m_drivetrain);
   }
 

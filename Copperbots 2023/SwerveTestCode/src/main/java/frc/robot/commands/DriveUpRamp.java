@@ -15,7 +15,6 @@ public class DriveUpRamp extends CommandBase {
   
   public DriveUpRamp(Drivetrain drivetrain) {
   this.m_drivetrain = drivetrain;
-  
   addRequirements(m_drivetrain);
   }
   

@@ -10,10 +10,12 @@ public class Hand extends SubsystemBase{
   final CANSparkMax handMotor = new CANSparkMax(15, MotorType.kBrushed);
 
   public void controlHand(double speed) {
-    handMotor.set(speed);
+    handMotor.set(speed*.4);
   }
 
-
+  public double getCurrent(){
+  return handMotor.getOutputCurrent();
+  }
 
 
 @Override

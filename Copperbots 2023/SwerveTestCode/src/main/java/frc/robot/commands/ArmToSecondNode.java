@@ -11,7 +11,6 @@ public class ArmToSecondNode extends CommandBase{
 
   public ArmToSecondNode(Arm arm) {
     this.m_arm = arm;
-    
     addRequirements(m_arm);
   }
 

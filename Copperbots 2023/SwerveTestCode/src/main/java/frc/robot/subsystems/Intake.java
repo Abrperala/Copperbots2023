@@ -18,24 +18,21 @@ public class Intake extends SubsystemBase {
   public void extend() {
     m_DoubleSolenoid.set(Value.kForward);
     pistonState = true;
-}
+  } 
 
-public void retract() {
+  public void retract() {
     m_DoubleSolenoid.set(Value.kReverse);
     pistonState = false;
-}
+  }
 
-public void togglePiston() {
-  if(pistonState) {
+  public void togglePiston() {
+   if(pistonState) {
     retract();
-  } 
+    } 
   else {
     extend();
+   }
   }
- }
-
-
- 
 
 
 }

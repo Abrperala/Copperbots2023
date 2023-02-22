@@ -5,12 +5,13 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class TopRoller extends SubsystemBase {
+  public class TopRoller extends SubsystemBase {
   
-  final CANSparkMax topIntake = new CANSparkMax(16, MotorType.kBrushed);
+    final CANSparkMax topIntake = new CANSparkMax(16, MotorType.kBrushed);
 
 
-public void rollTopIntake(double speed){
+  public void rollTopIntake(double speed){
   topIntake.set(speed);
  }
+
 }

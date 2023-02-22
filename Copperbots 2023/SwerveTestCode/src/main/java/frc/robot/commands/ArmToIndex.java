@@ -11,7 +11,6 @@ public class ArmToIndex extends CommandBase {
 
   public ArmToIndex(Arm arm) {
     this.m_arm = arm;
-    
     addRequirements(m_arm);
   }
 

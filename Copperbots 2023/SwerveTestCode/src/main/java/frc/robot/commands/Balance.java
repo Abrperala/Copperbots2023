@@ -19,7 +19,6 @@ private ChassisSpeeds m_targetSpeeds;
 
 public Balance(Drivetrain drivetrain) {
 this.m_drivetrain = drivetrain;
-
 addRequirements(m_drivetrain);
 }
 

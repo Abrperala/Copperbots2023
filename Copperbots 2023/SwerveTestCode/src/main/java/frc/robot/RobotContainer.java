@@ -106,16 +106,7 @@ public class RobotContainer {
     new JoystickButton(m_driver, 14).onTrue(new TurnOnField(m_drivetrain));
 
     //Operator Button Bindings
-    
-    // sets the operator controller center pad to the command togglePiston
-    new JoystickButton(m_operator, 14).onTrue(new InstantCommand(m_arm::togglePiston));
 
-    // sets the operator controller right bumper to the command TopIntakeGoBrrrrrrr
-    new JoystickButton(m_operator, 6).whileTrue(new TopIntakeGoBrrrrrrr(m_topRoller));
-
-    // sets the operator controller left bumper to the command TopIntakeGoBrrrrrrr and BottomINtakeGoBrrrrrrr
-    new JoystickButton(m_operator, 5).whileTrue(new ParallelCommandGroup(new TopIntakeGoBrrrrrrr(m_topRoller), new BottomIntakeGoBrrrrrrr(m_bottomRoller)));
- 
     // sets the operator controller square button to the command ArmToInDex
     new JoystickButton(m_operator, 1).onTrue(new ArmToIndex(m_arm));
    
@@ -128,11 +119,17 @@ public class RobotContainer {
     // sets the operator controller triangle button to the command ArmToPlayerStation
     new JoystickButton(m_operator, 4).onTrue(new ArmToPlayerStation(m_arm));
 
+    // sets the operator controller left bumper to the command TopIntakeGoBrrrrrrr and BottomINtakeGoBrrrrrrr
+    new JoystickButton(m_operator, 5).whileTrue(new ParallelCommandGroup(new TopIntakeGoBrrrrrrr(m_topRoller), new BottomIntakeGoBrrrrrrr(m_bottomRoller)));
+
+    // sets the operator controller right bumper to the command TopIntakeGoBrrrrrrr
+    new JoystickButton(m_operator, 6).whileTrue(new TopIntakeGoBrrrrrrr(m_topRoller));
+
+    // sets the operator controller center pad to the command togglePiston
+    new JoystickButton(m_operator, 14).onTrue(new InstantCommand(m_arm::togglePiston));
   }
 
   
-
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -160,6 +157,4 @@ public class RobotContainer {
 
     return value;
   }
-  }
-
-
+}

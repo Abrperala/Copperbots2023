@@ -10,7 +10,6 @@ public class TopIntakeGoBrrrrrrr extends CommandBase{
 
   public TopIntakeGoBrrrrrrr(TopRoller topRoller) {
     this.m_topRoller = topRoller;
-    
     addRequirements(m_topRoller);
   }
 
