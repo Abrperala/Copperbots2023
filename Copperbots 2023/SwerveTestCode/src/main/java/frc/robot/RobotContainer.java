@@ -64,7 +64,7 @@ public class RobotContainer {
       () -> -modifyAxis(m_driver.getRawAxis(0)) * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(m_driver.getRawAxis(2)) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
       true
-));
+    ));
 
     // sets the hand to be controlled by the operator joystick
   m_hand.setDefaultCommand(new HandControl(m_hand, ()->m_operator.getRawAxis(1)));
@@ -110,16 +110,16 @@ public class RobotContainer {
     //Operator Button Bindings
 
     // sets the operator controller square button to the command ArmToInDex
-   // new JoystickButton(m_operator, 1).onTrue(new ArmToIndex(m_arm));
+    // new JoystickButton(m_operator, 1).onTrue(new ArmToIndex(m_arm));
    
     // sets the operator controller X button to the command ArmToSecondNode
-   // new JoystickButton(m_operator, 2).onTrue(new ArmToSecondNode(m_arm));
+    // new JoystickButton(m_operator, 2).onTrue(new ArmToSecondNode(m_arm));
 
     // sets the operator circle square button to the command ArmToThirdNode
     //new JoystickButton(m_operator, 3).onTrue(new ArmToThirdNode(m_arm));
 
     // sets the operator controller triangle button to the command ArmToPlayerStation
-   // new JoystickButton(m_operator, 4).onTrue(new ArmToPlayerStation(m_arm));
+    // new JoystickButton(m_operator, 4).onTrue(new ArmToPlayerStation(m_arm));
 
     // sets the first left bumper to the command HandClose 
     new JoystickButton(m_operator, 5).onTrue(new HandClose(m_hand));

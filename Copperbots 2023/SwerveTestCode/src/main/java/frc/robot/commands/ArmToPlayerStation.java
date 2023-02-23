@@ -25,7 +25,7 @@ public class ArmToPlayerStation extends CommandBase {
 
   @Override
   public void execute() {
-  m_arm.setArmPosition(pid.calculate(m_arm.getEncoderDistance(), 90));
+    m_arm.setArmPosition(pid.calculate(m_arm.getEncoderDistance(), 90));
    }
   
 
@@ -33,7 +33,7 @@ public class ArmToPlayerStation extends CommandBase {
   @Override
   public boolean isFinished() {
     Boolean result = false;
-    if (m_arm.getEncoderDistance() >= 1000){
+    if (m_arm.getEncoderDistance() >= 115){
       result = true;
     } 
     return result;
