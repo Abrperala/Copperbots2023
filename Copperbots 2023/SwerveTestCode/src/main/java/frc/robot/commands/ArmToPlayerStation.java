@@ -33,7 +33,7 @@ public class ArmToPlayerStation extends CommandBase {
   @Override
   public boolean isFinished() {
     Boolean result = false;
-    if (m_arm.getEncoderDistance() >= 90){
+    if (m_arm.getEncoderDistance() >= 1000){
       result = true;
     } 
     return result;

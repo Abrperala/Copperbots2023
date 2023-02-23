@@ -3,16 +3,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hand;
-import java.util.function.DoubleSupplier;
 
-public class HandControl extends CommandBase{
+public class HandOpen extends CommandBase{
   
   private final Hand m_hand;
-  private final DoubleSupplier m_speed;
 
-  public HandControl (Hand hand, DoubleSupplier speed) {
+  public HandOpen (Hand hand) {
     this.m_hand = hand;
-    this.m_speed = speed;
     addRequirements(m_hand);
   }
 
@@ -24,22 +21,25 @@ public class HandControl extends CommandBase{
 
   @Override
   public void execute() {
-  m_hand.controlHand(m_speed.getAsDouble()*.4);
+  m_hand.controlHand(0.2);
   }
   
 
 
   @Override
   public boolean isFinished() {
- 
-    return false;
+    boolean result = false;
+    if (m_hand.getEncoderDistance() <= 60) {
+    result = true;
+  }
+    return result;
   }
 
 
 
   @Override
   public void end(boolean interrupted) {
- 
+ m_hand.controlHand(0);
   }
 }
 

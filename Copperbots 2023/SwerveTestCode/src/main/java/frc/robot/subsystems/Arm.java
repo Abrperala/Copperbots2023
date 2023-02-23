@@ -16,7 +16,7 @@ final CANSparkMax arm1 = new CANSparkMax(13, MotorType.kBrushless);
 final CANSparkMax arm2 = new CANSparkMax(14, MotorType.kBrushless);
 private final Encoder armEncoder = new Encoder(8, 7, true, CounterBase.EncodingType.k4X);
 
-private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 9);
+private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 9, 10);
 public boolean pistonState;
 
 public Arm(){

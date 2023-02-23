@@ -12,7 +12,7 @@ public class Intake extends SubsystemBase {
 
   
   public boolean pistonState;
-  private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 10, 11);
+  private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 11);
 
 
   public void extend() {

@@ -21,7 +21,7 @@ public class ArmToSecondNode extends CommandBase{
 
   @Override
   public void execute() {
-  m_arm.setArmPosition(pid.calculate(m_arm.getEncoderDistance(), 45));
+  m_arm.setArmPosition(pid.calculate(m_arm.getEncoderDistance(), 88));
    }
   
 
@@ -29,7 +29,7 @@ public class ArmToSecondNode extends CommandBase{
   @Override
   public boolean isFinished() {
     Boolean result = false;
-    if (Math.abs(m_arm.getEncoderDistance()) < 0.5){
+    if (Math.abs(m_arm.getEncoderDistance()) > 115){
       result = true;
     } 
     return result;
