@@ -19,7 +19,9 @@ public class Hand extends SubsystemBase{
   //HandEncoder.reset();
   }
   public void controlHand(double speed) {
+    handMotor.setVoltage(speed);
     handMotor.set(speed);
+
   }
 
   public double getCurrent(){

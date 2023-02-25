@@ -7,7 +7,6 @@ package frc.robot;
 
 import frc.robot.commands.AlignWithPoles;
 import frc.robot.commands.ArmToIndex;
-import frc.robot.commands.ArmToPlayerStation;
 import frc.robot.commands.ArmToSecondNode;
 import frc.robot.commands.ArmToThirdNode;
 import frc.robot.commands.Balance;
@@ -29,6 +28,7 @@ import frc.robot.commands.DriveUpRampBackwards;
 import frc.robot.commands.HandClose;
 import frc.robot.commands.HandControl;
 import frc.robot.commands.HandOpen;
+import frc.robot.commands.KeepHandClosed;
 import frc.robot.commands.TopIntakeGoBrrrrrrr;
 import frc.robot.commands.TurnOnField;
 import frc.robot.subsystems.Arm;
@@ -110,19 +110,16 @@ public class RobotContainer {
     //Operator Button Bindings
 
     // sets the operator controller square button to the command ArmToInDex
-    // new JoystickButton(m_operator, 1).onTrue(new ArmToIndex(m_arm));
+     new JoystickButton(m_operator, 1).onTrue(new ArmToIndex(m_arm));
    
     // sets the operator controller X button to the command ArmToSecondNode
-    // new JoystickButton(m_operator, 2).onTrue(new ArmToSecondNode(m_arm));
+     new JoystickButton(m_operator, 2).onTrue(new ArmToSecondNode(m_arm));
 
     // sets the operator circle square button to the command ArmToThirdNode
-    //new JoystickButton(m_operator, 3).onTrue(new ArmToThirdNode(m_arm));
-
-    // sets the operator controller triangle button to the command ArmToPlayerStation
-    // new JoystickButton(m_operator, 4).onTrue(new ArmToPlayerStation(m_arm));
+    new JoystickButton(m_operator, 3).onTrue(new ArmToThirdNode(m_arm));
 
     // sets the first left bumper to the command HandClose 
-    new JoystickButton(m_operator, 5).onTrue(new HandClose(m_hand));
+    new JoystickButton(m_operator, 5).onTrue(new SequentialCommandGroup(new HandClose(m_hand), new KeepHandClosed(m_hand)));
 
     // sets the first left bumper to the command HandOpen 
     new JoystickButton(m_operator, 6).onTrue(new HandOpen(m_hand));

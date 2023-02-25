@@ -1,12 +1,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.subsystems.Arm;
 public class ArmToIndex extends CommandBase {
   
-  PIDController pid = new PIDController(.005, 0.005, 0);
- 
+  TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(30000, 70);
+  ProfiledPIDController pid = new ProfiledPIDController(.03, 0.0006, 0.00, constraints);
+   
   private final Arm m_arm;
 
   public ArmToIndex(Arm arm) {
@@ -17,6 +19,8 @@ public class ArmToIndex extends CommandBase {
 
   @Override
   public void initialize() {
+    pid.reset(m_arm.getEncoderDistance());
+
   }
 
   @Override
@@ -29,7 +33,7 @@ public class ArmToIndex extends CommandBase {
   @Override
   public boolean isFinished() {
     Boolean result = false;
-    if (Math.abs(m_arm.getEncoderDistance()) < 0.5){
+    if (Math.abs(m_arm.getEncoderDistance()) < 1){
       result = true;
     } 
     return result;
