@@ -15,7 +15,6 @@ public class DriveUpRampBackwards extends CommandBase {
   
   public DriveUpRampBackwards(Drivetrain drivetrain) {
   this.m_drivetrain = drivetrain;
-  
   addRequirements(m_drivetrain);
   }
   

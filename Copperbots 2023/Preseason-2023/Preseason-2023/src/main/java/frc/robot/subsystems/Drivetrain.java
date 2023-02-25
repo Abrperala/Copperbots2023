@@ -50,7 +50,7 @@ public class Drivetrain extends SubsystemBase {
   m_led.start();
 
   for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-    m_ledBuffer.setRGB(i, 0, 255, 0);
+    m_ledBuffer.setRGB(i, 255, 0, 255);
  }
  
  m_led.setData(m_ledBuffer);

@@ -19,7 +19,6 @@ public class AlignWithPoles extends CommandBase {
   public AlignWithPoles(Drivetrain drivetrain, LimelightSubsystem limelight) {
     this.m_drivetrain = drivetrain;
     this.m_limelight = limelight;
-    
     addRequirements(m_drivetrain);
   }
 
