@@ -26,6 +26,9 @@ public class ArmToIndex extends CommandBase {
   @Override
   public void execute() {
   m_arm.setArmPosition(pid.calculate(m_arm.getEncoderDistance(), 0));
+  if (m_arm.getLimitSwitch() == false) {
+    m_arm.setArmPosition(0);
+  }
    }
   
 

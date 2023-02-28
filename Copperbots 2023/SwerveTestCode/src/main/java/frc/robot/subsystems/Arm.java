@@ -9,13 +9,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.CounterBase;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Arm extends SubsystemBase {
 
   final CANSparkMax arm1 = new CANSparkMax(13, MotorType.kBrushless);
   final CANSparkMax arm2 = new CANSparkMax(14, MotorType.kBrushless);
   private final Encoder armEncoder = new Encoder(8, 7, true, CounterBase.EncodingType.k4X);
-
+  DigitalInput limitSwitch = new DigitalInput(1);
   private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 9, 10);
   public boolean pistonState;
 
@@ -47,6 +48,9 @@ public class Arm extends SubsystemBase {
     m_DoubleSolenoid.set(Value.kReverse);
     pistonState = false;
   }
+  public boolean getLimitSwitch(){
+    return limitSwitch.get();
+  }
 
   public void togglePiston() {
     if(pistonState) {
@@ -61,6 +65,7 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic(){
     SmartDashboard.putNumber("arm encoder", armEncoder.getDistance());
+    SmartDashboard.putBoolean("limit switch", limitSwitch.get());
   }
 
 }

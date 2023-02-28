@@ -8,7 +8,6 @@ import frc.robot.subsystems.Drivetrain;
 
 /**
  * command for the robot to rotate to face the cone nodes
- * 
  */
 public class TurnOnField extends CommandBase {
 
