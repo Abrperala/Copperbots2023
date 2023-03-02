@@ -13,12 +13,15 @@ import frc.robot.commands.Balance;
 import frc.robot.commands.BottomIntakeGoBrrrrrrr;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.TopRoller;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.Intake;
@@ -29,10 +32,12 @@ import frc.robot.commands.HandClose;
 import frc.robot.commands.HandControl;
 import frc.robot.commands.HandOpen;
 import frc.robot.commands.KeepHandClosed;
+import frc.robot.commands.RunIndex;
 import frc.robot.commands.TopIntakeGoBrrrrrrr;
 import frc.robot.commands.TurnOnField;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.BottomRoller;
+import frc.robot.subsystems.Index;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -44,33 +49,41 @@ public class RobotContainer {
 
   private final Joystick m_driver = new Joystick(0); //port:0 is driver's controller
   private final Joystick m_operator = new Joystick(1); //port:1 is operator's controller
+
   // The robot's subsystems are defined here...
   //creates object of subsystem to be used for button commands
-  private final LimelightSubsystem m_limelight = new LimelightSubsystem(); //
+  private final LimelightSubsystem m_limelight = new LimelightSubsystem(); 
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Arm m_arm = new Arm();
   private final Intake m_intake = new Intake();
   private final TopRoller m_topRoller = new TopRoller();
   private final BottomRoller m_bottomRoller = new BottomRoller();
   private final Hand m_hand = new Hand();
+  private final Index m_index = new Index();
+  private final SendableChooser<String> m_autoChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
     // sets the drivetrain default to be controlled by the axis of the driver controller
     m_drivetrain.setDefaultCommand(new DriveCommand(
       m_drivetrain,
       () -> -modifyAxis(m_driver.getRawAxis(1)) * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(m_driver.getRawAxis(0)) * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(m_driver.getRawAxis(2)) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+      () -> -modifyAxis(-m_driver.getRawAxis(2)) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
       true
     ));
 
     // sets the hand to be controlled by the operator joystick
   m_hand.setDefaultCommand(new HandControl(m_hand, ()->m_operator.getRawAxis(1)));
 
+
     // Configure the trigger bindings
     configureBindings();
+
+    SmartDashboard.putData("Autonomous Chooser", m_autoChooser);
+
+    m_autoChooser.addOption("Leave and Balance", "Leave and Balance");
+    m_autoChooser.addOption("Just Balance", "Just Balance");
   }
 
   /**
@@ -89,16 +102,16 @@ public class RobotContainer {
     // sets the driver controller square button to the command AlignWithPoles
     new JoystickButton(m_driver, 1).onTrue(new AlignWithPoles(m_drivetrain, m_limelight));
  
-    // sets the driver controller X button to the command Balance
+    // sets the driver controller X button to the command Balance Delete?
     new JoystickButton(m_driver, 2).onTrue(new Balance(m_drivetrain));
 
-    // sets the driver controller circle button to the command DriveUpRamp
+    // sets the driver controller circle button to the command DriveUpRamp Delete?
     new JoystickButton(m_driver, 3).onTrue(new DriveUpRamp(m_drivetrain));
 
-    // sets the driver controller triangle button to the command DriveUpRampBackwards
+    // sets the driver controller triangle button to the command DriveUpRampBackwards Delete?
     new JoystickButton(m_driver, 4).onTrue(new DriveUpRampBackwards(m_drivetrain));
 
-     // sets the driver controller left bumper button to the commands DriveUpRamp and Balance
+     // sets the driver controller left bumper button to the commands DriveUpRamp and Balance Delete?
     new JoystickButton(m_driver, 5).onTrue(new SequentialCommandGroup(new DriveUpRamp(m_drivetrain), new Balance(m_drivetrain)));
   
     // sets the driver controller options button to the command resetGyro
@@ -118,7 +131,7 @@ public class RobotContainer {
     // sets the operator circle square button to the command ArmToThirdNode
     new JoystickButton(m_operator, 3).onTrue(new ArmToThirdNode(m_arm));
 
-    // sets the first left bumper to the command HandClose 
+    // sets the first left bumper to the command HandClose
     new JoystickButton(m_operator, 5).onTrue(new SequentialCommandGroup(new HandClose(m_hand), new KeepHandClosed(m_hand)));
 
     // sets the first left bumper to the command HandOpen 
@@ -130,10 +143,37 @@ public class RobotContainer {
     // sets the operator controller second right bumper to the command TopIntakeGoBrrrrrrr
     new JoystickButton(m_operator, 8).whileTrue(new TopIntakeGoBrrrrrrr(m_topRoller));
 
-    // sets the operator controller center pad to the command togglePiston
+    // sets the operator controller Share button to the RunIndex Command
+    new JoystickButton(m_operator, 9).onTrue(new RunIndex(m_index));
+
+    // sets the operator controller center pad to the command togglePiston on intake
+    new JoystickButton(m_operator, 13).onTrue(new InstantCommand(m_intake::togglePiston));
+
+    // sets the operator controller center pad to the command togglePiston on arm
     new JoystickButton(m_operator, 14).onTrue(new InstantCommand(m_arm::togglePiston));
+
+
   }
 
+  public Command getAutonomousCommand() {
+
+    String chosenAuto = m_autoChooser.getSelected();
+
+    SmartDashboard.putString("Chosen Auto", chosenAuto);
+    
+    switch(chosenAuto) {
+      case "Leave and Balance":
+      return new SequentialCommandGroup(
+
+      );
+      case "Just Balance":
+      return new SequentialCommandGroup(
+
+      );
+      default:
+      return null;
+    }
+  }
   
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

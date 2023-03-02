@@ -20,20 +20,19 @@ public class KeepHandClosed extends CommandBase {
 
   @Override
   public void execute() {
-  if (m_hand.getEncoderDistance() >= 160){
-    m_hand.controlHand(-.05);
+  if (m_hand.getEncoderDistance() >= 35){
+    m_hand.controlHand(.05);
   }
   else {
-    m_hand.controlHand(-0.05);
+    m_hand.controlHand(0.07);
   }
-  }
-  
+ }
 
 
   @Override
   public boolean isFinished() {
     boolean result = false;
-    if (m_hand.getEncoderDistance() > 205) {
+    if (m_hand.getEncoderDistance() > 80) {
     result = true;
   }
     return result;

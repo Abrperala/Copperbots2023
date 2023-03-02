@@ -16,7 +16,7 @@ public class Arm extends SubsystemBase {
   final CANSparkMax arm1 = new CANSparkMax(13, MotorType.kBrushless);
   final CANSparkMax arm2 = new CANSparkMax(14, MotorType.kBrushless);
   private final Encoder armEncoder = new Encoder(8, 7, true, CounterBase.EncodingType.k4X);
-  DigitalInput limitSwitch = new DigitalInput(1);
+  DigitalInput limitSwitch = new DigitalInput(2);
   private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 9, 10);
   public boolean pistonState;
 
@@ -57,10 +57,11 @@ public class Arm extends SubsystemBase {
       retract();
     } 
     else {
-      extend();
+      if(armEncoder.getDistance() >= 90){
+        extend();
     }
   }
-
+  }
 
   @Override
   public void periodic(){

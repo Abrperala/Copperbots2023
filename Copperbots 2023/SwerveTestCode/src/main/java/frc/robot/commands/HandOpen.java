@@ -21,7 +21,7 @@ public class HandOpen extends CommandBase{
 
   @Override
   public void execute() {
-  m_hand.controlHand(0.2);
+  m_hand.controlHand(-0.2);
   }
   
 
@@ -29,7 +29,7 @@ public class HandOpen extends CommandBase{
   @Override
   public boolean isFinished() {
     boolean result = false;
-    if (m_hand.getEncoderDistance() <= 60) {
+    if (m_hand.getEncoderDistance() <= 25) {
     result = true;
   }
     return result;

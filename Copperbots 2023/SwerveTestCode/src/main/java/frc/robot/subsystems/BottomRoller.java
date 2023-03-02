@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class BottomRoller extends SubsystemBase{
   
-  final CANSparkMax bottomIntake = new CANSparkMax(17, MotorType.kBrushed);
+  final CANSparkMax bottomIntake = new CANSparkMax(16, MotorType.kBrushed);
 
 
   public void rollBottomIntake(double speed){

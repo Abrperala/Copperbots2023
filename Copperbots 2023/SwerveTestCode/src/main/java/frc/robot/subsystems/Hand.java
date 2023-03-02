@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.CounterBase;
 public class Hand extends SubsystemBase{
   
   final CANSparkMax handMotor = new CANSparkMax(15, MotorType.kBrushed);
-  private final Encoder HandEncoder = new Encoder(4, 3, true, CounterBase.EncodingType.k4X);
+  private final Encoder HandEncoder = new Encoder(4, 3, false, CounterBase.EncodingType.k4X);
  
   double current = handMotor.getOutputCurrent();
   
@@ -19,7 +19,6 @@ public class Hand extends SubsystemBase{
   //HandEncoder.reset();
   }
   public void controlHand(double speed) {
-    handMotor.setVoltage(speed);
     handMotor.set(speed);
 
   }
