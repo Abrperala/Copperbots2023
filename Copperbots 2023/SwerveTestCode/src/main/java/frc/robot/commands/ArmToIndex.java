@@ -20,13 +20,13 @@ public class ArmToIndex extends CommandBase {
   @Override
   public void initialize() {
     pid.reset(m_arm.getEncoderDistance());
-
+    m_arm.retract();
   }
 
   @Override
   public void execute() {
   m_arm.setArmPosition(pid.calculate(m_arm.getEncoderDistance(), 0));
-  if (m_arm.getLimitSwitch() == false) {
+  if (m_arm.getLimitSwitch() == false || m_arm.pistonState == false) {
     m_arm.setArmPosition(0);
   }
    }

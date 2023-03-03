@@ -180,16 +180,7 @@ public class RobotContainer {
       new ArmToIndex(m_arm)
       );
       default:
-       return new SequentialCommandGroup(
-        new HandClose(m_hand),
-        new ParallelCommandGroup( new KeepHandClosed(m_hand),
-        new SequentialCommandGroup( new ArmToThirdNode(m_arm),
-        new ArmExtend(m_arm),
-        new HandOpen(m_hand))),
-        new HandClose(m_hand),
-        new ArmExtend(m_arm),
-        new ArmToIndex(m_arm)
-        );
+       return null;
     }
   }
   
