@@ -17,10 +17,10 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
  * project.
  */
 public class Robot extends TimedRobot {
-
+  private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
   private Compressor m_Compressor = new Compressor(PneumaticsModuleType.REVPH);
-  private Command m_autonomousCommand;
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -98,12 +99,4 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {}
 
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {}
-  //test Comment
-  //test Comment #2 lol
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {}
 }

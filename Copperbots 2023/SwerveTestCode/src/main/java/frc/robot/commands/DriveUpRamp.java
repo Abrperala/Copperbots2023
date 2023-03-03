@@ -35,7 +35,7 @@ public class DriveUpRamp extends CommandBase {
        */
       
        m_targetSpeeds = new ChassisSpeeds(
-        .5, 
+        1.6, 
         0.0,
         0.0
       );
@@ -44,7 +44,7 @@ public class DriveUpRamp extends CommandBase {
     
   
     /**
-     * stops the command when the error of the gyro is less than .5
+     * stops the command when the error of the gyro is greater than 12
      */
     @Override
     public boolean isFinished(){

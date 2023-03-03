@@ -21,7 +21,7 @@ public class RunIndex extends CommandBase {
   @Override
   public void execute() {
    if (m_index.getBeamBreak() == true) {
-   m_index.controlIndex(-1);
+   m_index.controlIndex(-0.5);
    }
   }
   

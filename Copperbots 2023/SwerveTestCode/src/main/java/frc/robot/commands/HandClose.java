@@ -29,7 +29,7 @@ public class HandClose extends CommandBase{
   @Override
   public boolean isFinished() {
     boolean result = false;
-    if (m_hand.getCurrent() >= 18 || m_hand.getEncoderDistance() > 75) {
+    if (m_hand.getCurrent() >= 18 || m_hand.getEncoderDistance() > 90) {
     result = true;
   }
     return result;

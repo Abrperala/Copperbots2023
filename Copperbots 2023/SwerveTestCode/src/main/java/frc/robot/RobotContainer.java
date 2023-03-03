@@ -6,6 +6,7 @@ package frc.robot;
 
 
 import frc.robot.commands.AlignWithPoles;
+import frc.robot.commands.ArmExtend;
 import frc.robot.commands.ArmToIndex;
 import frc.robot.commands.ArmToSecondNode;
 import frc.robot.commands.ArmToThirdNode;
@@ -82,8 +83,8 @@ public class RobotContainer {
 
     SmartDashboard.putData("Autonomous Chooser", m_autoChooser);
 
-    m_autoChooser.addOption("Leave and Balance", "Leave and Balance");
     m_autoChooser.addOption("Just Balance", "Just Balance");
+    m_autoChooser.addOption("Place Object high", "Place Object high");
   }
 
   /**
@@ -100,25 +101,25 @@ public class RobotContainer {
     //Driver Button Bindings
 
     // sets the driver controller square button to the command AlignWithPoles
-    new JoystickButton(m_driver, 1).onTrue(new AlignWithPoles(m_drivetrain, m_limelight));
+    //new JoystickButton(m_driver, 1).onTrue(new AlignWithPoles(m_drivetrain, m_limelight));
  
     // sets the driver controller X button to the command Balance Delete?
-    new JoystickButton(m_driver, 2).onTrue(new Balance(m_drivetrain));
+    //new JoystickButton(m_driver, 2).onTrue(new Balance(m_drivetrain));
 
     // sets the driver controller circle button to the command DriveUpRamp Delete?
-    new JoystickButton(m_driver, 3).onTrue(new DriveUpRamp(m_drivetrain));
+    //new JoystickButton(m_driver, 3).onTrue(new DriveUpRamp(m_drivetrain));
 
     // sets the driver controller triangle button to the command DriveUpRampBackwards Delete?
-    new JoystickButton(m_driver, 4).onTrue(new DriveUpRampBackwards(m_drivetrain));
+   // new JoystickButton(m_driver, 4).onTrue(new DriveUpRampBackwards(m_drivetrain));
 
      // sets the driver controller left bumper button to the commands DriveUpRamp and Balance Delete?
-    new JoystickButton(m_driver, 5).onTrue(new SequentialCommandGroup(new DriveUpRamp(m_drivetrain), new Balance(m_drivetrain)));
+   // new JoystickButton(m_driver, 5).onTrue(new SequentialCommandGroup(new DriveUpRamp(m_drivetrain), new Balance(m_drivetrain)));
   
     // sets the driver controller options button to the command resetGyro
     new JoystickButton(m_driver, 10).onTrue(new InstantCommand(m_drivetrain::resetGyro));
 
     // sets the driver controller center pad to the command TurnOnField  
-    new JoystickButton(m_driver, 14).onTrue(new TurnOnField(m_drivetrain));
+   // new JoystickButton(m_driver, 14).onTrue(new TurnOnField(m_drivetrain));
 
     //Operator Button Bindings
 
@@ -162,16 +163,33 @@ public class RobotContainer {
     SmartDashboard.putString("Chosen Auto", chosenAuto);
     
     switch(chosenAuto) {
-      case "Leave and Balance":
-      return new SequentialCommandGroup(
-
-      );
       case "Just Balance":
       return new SequentialCommandGroup(
-
+      new DriveUpRamp(m_drivetrain), 
+      new Balance(m_drivetrain)
+      );
+      case "Place Object high":
+      return new SequentialCommandGroup(
+      new HandClose(m_hand),
+      new ParallelCommandGroup( new KeepHandClosed(m_hand),
+      new SequentialCommandGroup( new ArmToThirdNode(m_arm),
+      new ArmExtend(m_arm),
+      new HandOpen(m_hand))),
+      new HandClose(m_hand),
+      new ArmExtend(m_arm),
+      new ArmToIndex(m_arm)
       );
       default:
-      return null;
+       return new SequentialCommandGroup(
+        new HandClose(m_hand),
+        new ParallelCommandGroup( new KeepHandClosed(m_hand),
+        new SequentialCommandGroup( new ArmToThirdNode(m_arm),
+        new ArmExtend(m_arm),
+        new HandOpen(m_hand))),
+        new HandClose(m_hand),
+        new ArmExtend(m_arm),
+        new ArmToIndex(m_arm)
+        );
     }
   }
   
