@@ -20,9 +20,9 @@ public class RunIndex extends CommandBase {
 
   @Override
   public void execute() {
-   if (m_index.getBeamBreak() == true) {
+  
    m_index.controlIndex(-0.5);
-   }
+   
   }
   
 
@@ -30,9 +30,6 @@ public class RunIndex extends CommandBase {
   @Override
   public boolean isFinished() {
     boolean result = false;
-    if (m_index.getBeamBreak() == false){
-      result = true;
-    }
     return result;
   }
 

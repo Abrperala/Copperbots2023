@@ -127,10 +127,10 @@ public class RobotContainer {
     //Operator Button Bindings
 
     // sets the operator controller square button to the command ArmToInDex
-     new JoystickButton(m_operator, 1).onTrue(new ArmToIndex(m_arm));
+    new JoystickButton(m_operator, 1).onTrue(new ArmToIndex(m_arm));
    
     // sets the operator controller X button to the command ArmToSecondNode
-     new JoystickButton(m_operator, 2).onTrue(new ArmToSecondNode(m_arm));
+    new JoystickButton(m_operator, 2).onTrue(new ArmToSecondNode(m_arm));
 
     // sets the operator circle square button to the command ArmToThirdNode
     new JoystickButton(m_operator, 3).onTrue(new ArmToThirdNode(m_arm));
@@ -148,13 +148,13 @@ public class RobotContainer {
     new JoystickButton(m_operator, 8).whileTrue(new SequentialCommandGroup(new TopIntakeGoBrrrrrrrBackwards(m_topRoller), new BottomIntakeGoBrrrrrrrBackwards(m_bottomRoller)));
 
     // sets the operator controller Share button to the RunIndex Command
-    new JoystickButton(m_operator, 9).onTrue(new RunIndex(m_index));
+    new JoystickButton(m_operator, 14).whileTrue(new RunIndex(m_index));
 
     // sets the operator controller center pad to the command togglePiston on intake
     new JoystickButton(m_operator, 13).onTrue(new InstantCommand(m_intake::togglePiston));
 
     // sets the operator controller center pad to the command togglePiston on arm
-    new JoystickButton(m_operator, 14).onTrue(new InstantCommand(m_arm::togglePiston));
+    //new JoystickButton(m_operator, 14).onTrue(new InstantCommand(m_arm::togglePiston));
 
 
   }

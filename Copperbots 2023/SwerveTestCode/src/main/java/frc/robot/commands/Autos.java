@@ -43,12 +43,25 @@ public final class Autos {
   public static CommandBase PlaceCube(){
    return new SequentialCommandGroup(
     new HandClose(RobotContainer.m_hand),
-    new ArmToSecondNode(RobotContainer.m_arm),
-    new HandOpen(RobotContainer.m_hand), 
-    new WaitCommand(1),
-    new HandClose(RobotContainer.m_hand),
-    new ArmToIndex(RobotContainer.m_arm)
-   );
+    new ParallelCommandGroup(
+      new KeepHandClosed(RobotContainer.m_hand),
+      new ArmToSecondNode(RobotContainer.m_arm),
+      new SequentialCommandGroup(
+        new WaitCommand(1),
+        new ParallelCommandGroup(
+          new DriveForwardSlowly(RobotContainer.m_drivetrain),
+          new SequentialCommandGroup(
+            new WaitCommand(1),
+            new HandOpen(RobotContainer.m_hand),
+            new WaitCommand(.5),
+            new HandClose(RobotContainer.m_hand),
+            new ParallelCommandGroup(
+              new DriveBackwards(RobotContainer.m_drivetrain),
+                new SequentialCommandGroup(
+                new WaitCommand(1),
+                new ArmToIndex(RobotContainer.m_arm)
+        
+   )))))));
   }
   
   
