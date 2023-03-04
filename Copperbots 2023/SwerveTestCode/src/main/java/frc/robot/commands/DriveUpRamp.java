@@ -35,7 +35,7 @@ public class DriveUpRamp extends CommandBase {
        */
       
        m_targetSpeeds = new ChassisSpeeds(
-        1.6, 
+        1.5, 
         0.0,
         0.0
       );
@@ -48,7 +48,7 @@ public class DriveUpRamp extends CommandBase {
      */
     @Override
     public boolean isFinished(){
-      return Math.abs(error) > 12;
+      return Math.abs(error) > 25;
     }
   
   

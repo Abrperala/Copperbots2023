@@ -12,9 +12,11 @@ import frc.robot.commands.ArmToSecondNode;
 import frc.robot.commands.ArmToThirdNode;
 import frc.robot.commands.Balance;
 import frc.robot.commands.BottomIntakeGoBrrrrrrr;
+import frc.robot.commands.BottomIntakeGoBrrrrrrrBackwards;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.TopRoller;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -35,10 +37,12 @@ import frc.robot.commands.HandOpen;
 import frc.robot.commands.KeepHandClosed;
 import frc.robot.commands.RunIndex;
 import frc.robot.commands.TopIntakeGoBrrrrrrr;
+import frc.robot.commands.TopIntakeGoBrrrrrrrBackwards;
 import frc.robot.commands.TurnOnField;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.BottomRoller;
 import frc.robot.subsystems.Index;
+import frc.robot.commands.Autos;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -54,14 +58,14 @@ public class RobotContainer {
   // The robot's subsystems are defined here...
   //creates object of subsystem to be used for button commands
   private final LimelightSubsystem m_limelight = new LimelightSubsystem(); 
-  private final Drivetrain m_drivetrain = new Drivetrain();
-  private final Arm m_arm = new Arm();
-  private final Intake m_intake = new Intake();
-  private final TopRoller m_topRoller = new TopRoller();
-  private final BottomRoller m_bottomRoller = new BottomRoller();
-  private final Hand m_hand = new Hand();
-  private final Index m_index = new Index();
-  private final SendableChooser<String> m_autoChooser = new SendableChooser<>();
+  public static final Drivetrain m_drivetrain = new Drivetrain();
+  public static final Arm m_arm = new Arm();
+  public static final Intake m_intake = new Intake();
+  public static final TopRoller m_topRoller = new TopRoller();
+  public static final BottomRoller m_bottomRoller = new BottomRoller();
+  public static final Hand m_hand = new Hand();
+  public static final Index m_index = new Index();
+  private static final SendableChooser<CommandBase> m_autoChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -81,12 +85,11 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
 
-    SmartDashboard.putData("Autonomous Chooser", m_autoChooser);
-
-    m_autoChooser.addOption("Just Balance", "Just Balance");
-    m_autoChooser.addOption("Place Object high", "Place Object high");
+    m_autoChooser.setDefaultOption("None", Autos.none());
+    m_autoChooser.addOption("JustBalance", Autos.JustBalance());
+    m_autoChooser.addOption("PlaceCube", Autos.PlaceCube());
+    SmartDashboard.putData("Auto mode", m_autoChooser);
   }
-
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -142,7 +145,7 @@ public class RobotContainer {
     new JoystickButton(m_operator, 7).whileTrue(new ParallelCommandGroup(new TopIntakeGoBrrrrrrr(m_topRoller), new BottomIntakeGoBrrrrrrr(m_bottomRoller)));
 
     // sets the operator controller second right bumper to the command TopIntakeGoBrrrrrrr
-    new JoystickButton(m_operator, 8).whileTrue(new TopIntakeGoBrrrrrrr(m_topRoller));
+    new JoystickButton(m_operator, 8).whileTrue(new SequentialCommandGroup(new TopIntakeGoBrrrrrrrBackwards(m_topRoller), new BottomIntakeGoBrrrrrrrBackwards(m_bottomRoller)));
 
     // sets the operator controller Share button to the RunIndex Command
     new JoystickButton(m_operator, 9).onTrue(new RunIndex(m_index));
@@ -157,31 +160,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-
-    String chosenAuto = m_autoChooser.getSelected();
-
-    SmartDashboard.putString("Chosen Auto", chosenAuto);
-    
-    switch(chosenAuto) {
-      case "Just Balance":
-      return new SequentialCommandGroup(
-      new DriveUpRamp(m_drivetrain), 
-      new Balance(m_drivetrain)
-      );
-      case "Place Object high":
-      return new SequentialCommandGroup(
-      new HandClose(m_hand),
-      new ParallelCommandGroup( new KeepHandClosed(m_hand),
-      new SequentialCommandGroup( new ArmToThirdNode(m_arm),
-      new ArmExtend(m_arm),
-      new HandOpen(m_hand))),
-      new HandClose(m_hand),
-      new ArmExtend(m_arm),
-      new ArmToIndex(m_arm)
-      );
-      default:
-       return null;
-    }
+    return m_autoChooser.getSelected();
   }
   
   /**

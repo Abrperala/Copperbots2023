@@ -184,7 +184,8 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Front Right encoder", m_frontRight.getTurnAngle() * (180/Math.PI));
       SmartDashboard.putNumber("Back Left encoder", m_backLeft.getTurnAngle() * (180/Math.PI));
       SmartDashboard.putNumber("Back Right encoder", m_backRight.getTurnAngle() * (180/Math.PI));
-      SmartDashboard.putNumber("Gyro Angle", m_gyro.getAngle());
+      SmartDashboard.putNumber("Gyro Angle for drive", m_gyro.getAngle());
+      SmartDashboard.putNumber("Gyro Angle for Balance", m_gyro.getRoll());
  
     }
 }

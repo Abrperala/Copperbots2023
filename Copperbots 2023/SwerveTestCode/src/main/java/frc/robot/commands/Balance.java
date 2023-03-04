@@ -37,11 +37,11 @@ addRequirements(m_drivetrain);
     /**
      * makes the drive power that goes to the motor 0.020 (P) times the error, the number is so small because the error is in degrees and the motors want a percent (I think?)
      */
-    drivePower = Math.min(0.030 * error, 1);
+    drivePower = Math.min(0.020 * error, 1);
     
  
     // Limit the max power of the wheels
-    if (Math.abs(drivePower) > 0.5) {
+    if (Math.abs(drivePower) > 0.4) {
       drivePower = Math.copySign(0.5, drivePower);
     }
 
