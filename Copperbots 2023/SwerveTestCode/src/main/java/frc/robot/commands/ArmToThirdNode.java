@@ -31,7 +31,7 @@ public class ArmToThirdNode extends CommandBase{
   @Override
   public boolean isFinished() {
     Boolean result = false;
-    if (Math.abs(m_arm.getEncoderDistance()) > 115){
+    if (Math.abs(m_arm.getEncoderDistance()) > 95){
       result = true;
     } 
     return result;

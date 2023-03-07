@@ -87,7 +87,8 @@ public class RobotContainer {
 
     m_autoChooser.setDefaultOption("None", Autos.none());
     m_autoChooser.addOption("JustBalance", Autos.JustBalance());
-    m_autoChooser.addOption("PlaceCube", Autos.PlaceCube());
+    m_autoChooser.addOption("LeaveCommunity", Autos.LeaveCommunity());
+   // m_autoChooser.addOption("PlaceCube", Autos.PlaceCube());
     SmartDashboard.putData("Auto mode", m_autoChooser);
   }
   /**

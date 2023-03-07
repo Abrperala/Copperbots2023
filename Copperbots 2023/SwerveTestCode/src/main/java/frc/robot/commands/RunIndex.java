@@ -21,7 +21,7 @@ public class RunIndex extends CommandBase {
   @Override
   public void execute() {
   
-   m_index.controlIndex(-0.5);
+   m_index.controlIndex(-1);
    
   }
   

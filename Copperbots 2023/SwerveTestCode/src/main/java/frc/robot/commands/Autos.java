@@ -40,7 +40,15 @@ public final class Autos {
 
     }
   
-  public static CommandBase PlaceCube(){
+    public static CommandBase LeaveCommunity(){
+      return new SequentialCommandGroup(
+      new ArmToThirdNode(RobotContainer.m_arm),
+      new ArmToIndex(RobotContainer.m_arm),
+      new WaitCommand(5),
+      new DriveBackwards(RobotContainer.m_drivetrain)
+      );
+    }
+  /**public static CommandBase PlaceCube(){
    return new SequentialCommandGroup(
     new HandClose(RobotContainer.m_hand),
     new ParallelCommandGroup(
@@ -62,7 +70,7 @@ public final class Autos {
                 new ArmToIndex(RobotContainer.m_arm)
         
    )))))));
-  }
+  }**/
   
   
   
