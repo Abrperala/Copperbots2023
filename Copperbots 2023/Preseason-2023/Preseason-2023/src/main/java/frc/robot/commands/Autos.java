@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Drivetrain;
 
 public final class Autos {
   /**  Example static factory for an autonomous command. 
@@ -24,12 +25,13 @@ public final class Autos {
   public static CommandBase driveAndStop(){
     return new SequentialCommandGroup(
     new WaitCommand(2),
-    new DriveForward(RobotContainer.m_drivetrain),
-    new WaitCommand(2),
-    new DriveStop(RobotContainer.m_drivetrain),
-    new WaitCommand(2),
-    new DriveForward(RobotContainer.m_drivetrain),
-    new WaitCommand(10000) 
+    new GetOnChargeStation(RobotContainer.m_drivetrain)
+    //new DriveForward(RobotContainer.m_drivetrain),
+    //new WaitCommand(2),
+    //new DriveStop(RobotContainer.m_drivetrain),
+    //new WaitCommand(2),
+    //new DriveForward(RobotContainer.m_drivetrain),
+    //new WaitCommand(1) 
     );
 
   }

@@ -6,8 +6,8 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class GetOnChargeStation extends CommandBase{
-  TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(10, 10);
-  ProfiledPIDController pid = new ProfiledPIDController(.7, .35, 0, constraints);
+  TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(10, 5);
+  ProfiledPIDController pid = new ProfiledPIDController(.9, .4, 0, constraints);
 
   private final Drivetrain m_drivetrain;
 
@@ -25,7 +25,7 @@ public class GetOnChargeStation extends CommandBase{
 
   @Override
   public void execute() { 
-    m_drivetrain.drive(0, -pid.calculate(m_drivetrain.getLeftEncoderDistance(), 6 ));
+    m_drivetrain.drive(0, -pid.calculate(m_drivetrain.getLeftEncoderDistance(), 7 ));
   }
 
  
