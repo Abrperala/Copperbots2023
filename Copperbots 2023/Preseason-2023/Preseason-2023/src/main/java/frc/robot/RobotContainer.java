@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -16,6 +17,10 @@ import frc.robot.commands.StickDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Piston;
 import frc.robot.Constants.*;
+import frc.robot.commands.Autos;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -28,8 +33,9 @@ public class RobotContainer {
   
 
   // The robot's subsystems and are defined here...
-  private final Drivetrain m_drivetrain = new Drivetrain();
-  public final Piston m_piston = new Piston();
+  public static final Drivetrain m_drivetrain = new Drivetrain();
+  public static final Piston m_piston = new Piston();
+  private static final SendableChooser<CommandBase> m_autoChooser = new SendableChooser<>();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     
@@ -41,6 +47,10 @@ public class RobotContainer {
   
     // Configure the button bindings
     configureButtonBindings();
+
+    m_autoChooser.setDefaultOption("noAuto", Autos.noneAuto());
+    m_autoChooser.addOption("Drive Forward and Stop", Autos.driveAndStop());
+    SmartDashboard.putData("Auto Mode", m_autoChooser);
   }
 
  
@@ -62,6 +72,9 @@ public class RobotContainer {
       new JoystickButton(stick, ButtonBindings.CIRCLE).onTrue(new GetOnChargeStation(m_drivetrain));
      //makes the Triangle button drive the robot Three wheel rotations and balance
       new JoystickButton(stick, ButtonBindings.TRIANGLE).onTrue(new SequentialCommandGroup(new GetOnChargeStation(m_drivetrain), new Balance(m_drivetrain)));
+    }
+    public Command getAutonomousCommand(){
+      return m_autoChooser.getSelected();
     }
 
 }

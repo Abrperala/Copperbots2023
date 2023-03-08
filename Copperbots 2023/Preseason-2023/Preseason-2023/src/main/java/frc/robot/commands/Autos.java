@@ -6,6 +6,9 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotContainer;
 
 public final class Autos {
   /**  Example static factory for an autonomous command. 
@@ -13,7 +16,21 @@ public final class Autos {
     return Commands.sequence(subsystem.exampleMethodCommand(), new ExampleCommand(subsystem));
   }
 
-  private Autos() {
-    throw new UnsupportedOperationException("This is a utility class!");
-  } */
+   */
+  public static CommandBase noneAuto() {
+    return Commands.none();
+  }
+
+  public static CommandBase driveAndStop(){
+    return new SequentialCommandGroup(
+    new WaitCommand(2),
+    new DriveForward(RobotContainer.m_drivetrain),
+    new WaitCommand(2),
+    new DriveStop(RobotContainer.m_drivetrain),
+    new WaitCommand(2),
+    new DriveForward(RobotContainer.m_drivetrain),
+    new WaitCommand(10000) 
+    );
+
+  }
 }

@@ -14,19 +14,10 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public final class Autos {
  
-/**private static final Map<String, Command> eventMap = new Hashmap<>(Map.ofEntries(
-  Map.entry("JustBalance", new SequentialCommandGroup(
-    new DriveUpRamp(RobotContainer.m_drivetrain), 
-    new Balance(RobotContainer.m_drivetrain)
-    ))
 
-
-)); */
   
   public static CommandBase none(){
     return Commands.none();
