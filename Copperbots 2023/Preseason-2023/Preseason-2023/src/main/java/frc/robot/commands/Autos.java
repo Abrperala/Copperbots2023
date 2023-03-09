@@ -22,11 +22,14 @@ public final class Autos {
     return Commands.none();
   }
 
-  public static CommandBase driveAndStop(){
+  public static CommandBase TaxiAndBalance(){
     return new SequentialCommandGroup(
-    new WaitCommand(2),
-    new GetOnChargeStation(RobotContainer.m_drivetrain)
-    //new DriveForward(RobotContainer.m_drivetrain),
+    new GetOnChargeStation(RobotContainer.m_drivetrain),
+    new DriveOverRamp(RobotContainer.m_drivetrain),
+    new GetOnChargeStation(RobotContainer.m_drivetrain),
+    new GetBackOnChargeStation(RobotContainer.m_drivetrain),
+    new Balance(RobotContainer.m_drivetrain)
+    //new DriveForward(RobotContainer.m_drivet0rain),
     //new WaitCommand(2),
     //new DriveStop(RobotContainer.m_drivetrain),
     //new WaitCommand(2),

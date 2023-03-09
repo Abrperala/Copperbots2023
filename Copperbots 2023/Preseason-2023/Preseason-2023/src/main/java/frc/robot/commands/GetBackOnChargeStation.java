@@ -5,13 +5,13 @@ import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
-public class GetOnChargeStation extends CommandBase{
+public class GetBackOnChargeStation extends CommandBase{
   TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(10, 5);
   ProfiledPIDController pid = new ProfiledPIDController(.9, .4, 0, constraints);
 
   private final Drivetrain m_drivetrain;
 
-  public GetOnChargeStation(Drivetrain drivetrain) {
+  public GetBackOnChargeStation(Drivetrain drivetrain) {
     this.m_drivetrain = drivetrain;
     
     addRequirements(m_drivetrain);
@@ -25,14 +25,14 @@ public class GetOnChargeStation extends CommandBase{
 
   @Override
   public void execute() { 
-    m_drivetrain.drive(0, -pid.calculate(m_drivetrain.getLeftEncoderDistance(), 7));
+    m_drivetrain.drive(0, -pid.calculate(m_drivetrain.getLeftEncoderDistance(), -18));
   }
 
  
   @Override
   public boolean isFinished(){
     boolean status = false;
-    if (m_drivetrain.getLeftEncoderDistance() >= 6) {
+    if (m_drivetrain.getLeftEncoderDistance() <= -17) {
     status = true;
   }
   return status;

@@ -48,8 +48,8 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    m_autoChooser.setDefaultOption("noAuto", Autos.noneAuto());
-    m_autoChooser.addOption("Drive Forward and Stop", Autos.driveAndStop());
+    m_autoChooser.setDefaultOption("no Auto", Autos.noneAuto());
+    m_autoChooser.addOption("Taxi And Balance", Autos.TaxiAndBalance());
     SmartDashboard.putData("Auto Mode", m_autoChooser);
   }
 
