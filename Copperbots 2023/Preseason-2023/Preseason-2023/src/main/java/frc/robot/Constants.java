@@ -26,4 +26,13 @@ public final class Constants {
 
   }
 
+  public static final int CANdleID = 6;
+
+    public static final int PURPLE_R = 255;
+    public static final int PURPLE_G = 0;
+    public static final int PURPLE_B = 191;
+
+    public static final int YELLOW_R = 255;
+    public static final int YELLOW_G = 130;
+    public static final int YELLOW_B = 0;
 }
