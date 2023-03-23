@@ -4,15 +4,7 @@
 
 package frc.robot;
 
-
 import frc.robot.commands.AlignWithPoles;
-import frc.robot.commands.ArmExtend;
-import frc.robot.commands.ArmToIndex;
-import frc.robot.commands.ArmToSecondNode;
-import frc.robot.commands.ArmToThirdNode;
-import frc.robot.commands.Balance;
-import frc.robot.commands.BottomIntakeGoBrrrrrrr;
-import frc.robot.commands.BottomIntakeGoBrrrrrrrBackwards;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.TopRoller;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.Joystick;
@@ -29,16 +22,20 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.DriveUpRamp;
-import frc.robot.commands.DriveUpRampBackwards;
-import frc.robot.commands.HandClose;
-import frc.robot.commands.HandControl;
-import frc.robot.commands.HandOpen;
-import frc.robot.commands.KeepHandClosed;
-import frc.robot.commands.RunIndex;
-import frc.robot.commands.TopIntakeGoBrrrrrrr;
-import frc.robot.commands.TopIntakeGoBrrrrrrrBackwards;
 import frc.robot.commands.TurnOnField;
+import frc.robot.commands.AutoCommands.ArmExtend;
+import frc.robot.commands.ButtonCommands.ArmToIndex;
+import frc.robot.commands.ButtonCommands.ArmToSecondNode;
+import frc.robot.commands.ButtonCommands.ArmToThirdNode;
+import frc.robot.commands.ButtonCommands.BottomIntakeGoBrrrrrrr;
+import frc.robot.commands.ButtonCommands.BottomIntakeGoBrrrrrrrBackwards;
+import frc.robot.commands.ButtonCommands.HandTwist;
+import frc.robot.commands.ButtonCommands.HandTwistBack;
+import frc.robot.commands.ButtonCommands.IndexReverse;
+import frc.robot.commands.ButtonCommands.RunIndex;
+import frc.robot.commands.ButtonCommands.RunIndexWithBeamBreak;
+import frc.robot.commands.ButtonCommands.TopIntakeGoBrrrrrrr;
+import frc.robot.commands.ButtonCommands.TopIntakeGoBrrrrrrrBackwards;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.BottomRoller;
 import frc.robot.subsystems.Index;
@@ -79,7 +76,6 @@ public class RobotContainer {
     ));
 
     // sets the hand to be controlled by the operator joystick
-  m_hand.setDefaultCommand(new HandControl(m_hand, ()->m_operator.getRawAxis(1)));
 
 
     // Configure the trigger bindings
@@ -88,8 +84,11 @@ public class RobotContainer {
     m_autoChooser.setDefaultOption("None", Autos.none());
     m_autoChooser.addOption("JustBalance", Autos.JustBalance());
     m_autoChooser.addOption("LeaveCommunity", Autos.LeaveCommunity());
+    m_autoChooser.addOption("Taxi and Balance", Autos.TaxiAndBalance());
    // m_autoChooser.addOption("PlaceCube", Autos.PlaceCube());
-    SmartDashboard.putData("Auto mode", m_autoChooser);
+    
+   SmartDashboard.putData("Auto mode", m_autoChooser);
+    SmartDashboard.putData("Chosen Auto",  m_autoChooser.getSelected());
   }
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -106,29 +105,17 @@ public class RobotContainer {
 
     // sets the driver controller square button to the command AlignWithPoles
     //new JoystickButton(m_driver, 1).onTrue(new AlignWithPoles(m_drivetrain, m_limelight));
- 
-    // sets the driver controller X button to the command Balance Delete?
-    //new JoystickButton(m_driver, 2).onTrue(new Balance(m_drivetrain));
-
-    // sets the driver controller circle button to the command DriveUpRamp Delete?
-    //new JoystickButton(m_driver, 3).onTrue(new DriveUpRamp(m_drivetrain));
-
-    // sets the driver controller triangle button to the command DriveUpRampBackwards Delete?
-   // new JoystickButton(m_driver, 4).onTrue(new DriveUpRampBackwards(m_drivetrain));
-
-     // sets the driver controller left bumper button to the commands DriveUpRamp and Balance Delete?
-   // new JoystickButton(m_driver, 5).onTrue(new SequentialCommandGroup(new DriveUpRamp(m_drivetrain), new Balance(m_drivetrain)));
   
-    // sets the driver controller options button to the command resetGyro
+    // sets the driver controller options button to reset the drive gyro
     new JoystickButton(m_driver, 10).onTrue(new InstantCommand(m_drivetrain::resetGyro));
 
-    // sets the driver controller center pad to the command TurnOnField  
-   // new JoystickButton(m_driver, 14).onTrue(new TurnOnField(m_drivetrain));
+    // sets the driver controller center pad to the command TurnOnField(to facing the scoring area)  
+    new JoystickButton(m_driver, 14).onTrue(new TurnOnField(m_drivetrain));
 
     //Operator Button Bindings
 
     // sets the operator controller square button to the command ArmToInDex
-    new JoystickButton(m_operator, 1).onTrue(new ArmToIndex(m_arm));
+    new JoystickButton(m_operator, 1).onTrue(new SequentialCommandGroup(new InstantCommand(m_arm::retract), new WaitCommand(1), new ArmToIndex(m_arm)));
    
     // sets the operator controller X button to the command ArmToSecondNode
     new JoystickButton(m_operator, 2).onTrue(new ArmToSecondNode(m_arm));
@@ -136,40 +123,52 @@ public class RobotContainer {
     // sets the operator circle square button to the command ArmToThirdNode
     new JoystickButton(m_operator, 3).onTrue(new ArmToThirdNode(m_arm));
 
+
+    new JoystickButton(m_operator, 4).onTrue(new SequentialCommandGroup(new RunIndexWithBeamBreak(m_index), new InstantCommand(m_hand::extend)));
+    
     // sets the first left bumper to the command HandClose
-    new JoystickButton(m_operator, 5).onTrue(new SequentialCommandGroup(new HandClose(m_hand), new KeepHandClosed(m_hand)));
+    new JoystickButton(m_operator, 5).onTrue(new InstantCommand(m_hand::retract));
 
     // sets the first left bumper to the command HandOpen 
-    new JoystickButton(m_operator, 6).onTrue(new HandOpen(m_hand));
+    new JoystickButton(m_operator, 6).onTrue(new InstantCommand((m_hand::extend)));
 
     // sets the operator controller second left bumper to the command TopIntakeGoBrrrrrrr and BottomINtakeGoBrrrrrrr
-    new JoystickButton(m_operator, 7).whileTrue(new ParallelCommandGroup(new TopIntakeGoBrrrrrrr(m_topRoller), new BottomIntakeGoBrrrrrrr(m_bottomRoller)));
+    new JoystickButton(m_operator, 7).whileTrue(new ParallelCommandGroup(new TopIntakeGoBrrrrrrrBackwards(m_topRoller), new BottomIntakeGoBrrrrrrrBackwards(m_bottomRoller)));
 
     // sets the operator controller second right bumper to the command TopIntakeGoBrrrrrrr
-    new JoystickButton(m_operator, 8).whileTrue(new SequentialCommandGroup(new TopIntakeGoBrrrrrrrBackwards(m_topRoller), new BottomIntakeGoBrrrrrrrBackwards(m_bottomRoller)));
+    new JoystickButton(m_operator, 8).whileTrue(new ParallelCommandGroup(new TopIntakeGoBrrrrrrr(m_topRoller), new BottomIntakeGoBrrrrrrr(m_bottomRoller)));
 
     // sets the operator controller Share button to the RunIndex Command
-    new JoystickButton(m_operator, 14).whileTrue(new RunIndex(m_index));
+    new JoystickButton(m_operator, 9).whileTrue(new IndexReverse(m_index));
 
-    // sets the operator controller center pad to the command togglePiston on intake
+    // sets the operator controller options button to the IndexReverse Command
+    new JoystickButton(m_operator, 10).whileTrue(new RunIndex(m_index));
+
+    new JoystickButton(m_operator, 11).onTrue(new HandTwist(m_hand));
+
+    new JoystickButton(m_operator, 12).onTrue(new HandTwistBack(m_hand));
+
+    // sets the operator controller ps4 button  to the command togglePiston on intake
     new JoystickButton(m_operator, 13).onTrue(new InstantCommand(m_intake::togglePiston));
 
-    // sets the operator controller center pad to the command togglePiston on arm
-    //new JoystickButton(m_operator, 14).onTrue(new InstantCommand(m_arm::togglePiston));
-
+     //sets the operator controller center pad to the command togglePiston on arm
+    new JoystickButton(m_operator, 14).onTrue(new InstantCommand(m_arm::togglePiston));
 
   }
 
-  public Command getAutonomousCommand() {
-    return m_autoChooser.getSelected();
-  }
-  
-  /**
+
+   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
 
+  public Command getAutonomousCommand() {
+
+    SmartDashboard.putData("Chosen Auto when on Autonomous Command",  m_autoChooser.getSelected());
+    return m_autoChooser.getSelected();
+  }
+  
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
       if (value > 0.0) {
@@ -187,7 +186,7 @@ public class RobotContainer {
     value = deadband(value, 0.055);
 
     // Square the axis
-  //  value = Math.copySign(value * value, value);
+    // value = Math.copySign(value * value, value);
 
     return value;
   }

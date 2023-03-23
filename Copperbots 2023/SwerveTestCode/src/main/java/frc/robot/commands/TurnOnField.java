@@ -32,7 +32,7 @@ public class TurnOnField extends CommandBase {
     m_targetSpeeds = new ChassisSpeeds(
       0.0, 
       0.0,
-      getGyroErrorWithLimit(0.0) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND 
+      getGyroErrorWithLimit(180) * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * .4
     );
     m_drivetrain.driveFromSpeeds(m_targetSpeeds, false);
   }
@@ -42,7 +42,7 @@ public class TurnOnField extends CommandBase {
    * stops the command when the gyro error is within 0.05% 
    */
   public boolean isFinished() {
-    return Math.abs(getGyroError(0.0)) < 0.0005;
+    return Math.abs(getGyroError(180)) < 0.0005;
   }
   /**
    * if the command becomes interrupted, the robot goes back to regular drive
@@ -54,17 +54,14 @@ public class TurnOnField extends CommandBase {
 
   /**
    * Get the percent angle error
-   * @param targetAngle desired gyro angle
+   * @param targetAngle desired gyro angle, (180)
    * @return The percent error of the drivebase
    */
   public double getGyroError(double targetAngle) {
     double adjustedAngle = m_drivetrain.getGyroPos() - targetAngle;
-    if (adjustedAngle > 180) {
-      return -(adjustedAngle - 360) / 360.0;
-    } else {
-      return -adjustedAngle / 360;
+    return adjustedAngle / 180;
     }
-  }
+  
   
   /**
    * Get the percent angle error but with limit at 5% and -5% for so the robot doesnt go to slow, might have to make into PID if I want to make it faster
@@ -88,5 +85,4 @@ public class TurnOnField extends CommandBase {
     }
   }
 }
-
 }

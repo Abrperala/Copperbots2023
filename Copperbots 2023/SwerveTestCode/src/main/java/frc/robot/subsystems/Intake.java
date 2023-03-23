@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 public class Intake extends SubsystemBase {
   
   public boolean pistonState;
-  private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,14, 15);
+  private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,12, 13);
   
   public Intake(){
     retract();

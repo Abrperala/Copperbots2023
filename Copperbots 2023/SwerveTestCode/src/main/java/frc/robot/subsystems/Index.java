@@ -5,9 +5,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Index extends SubsystemBase{
   
-  CANSparkMax indexMotor = new CANSparkMax(18, MotorType.kBrushed);
+  CANSparkMax indexMotor = new CANSparkMax(18, MotorType.kBrushless);
   DigitalInput beamBreak = new DigitalInput(1);
   
   public void controlIndex(double speed) {

@@ -9,6 +9,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.commands.*;
+import frc.robot.commands.AutoCommands.Balance;
+import frc.robot.commands.AutoCommands.DriveBackwards;
+import frc.robot.commands.AutoCommands.DriveOverRamp;
+import frc.robot.commands.AutoCommands.DriveUpRamp;
+import frc.robot.commands.AutoCommands.DriveUpRampBackwards;
+import frc.robot.commands.ButtonCommands.ArmToIndex;
+import frc.robot.commands.ButtonCommands.ArmToThirdNode;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -16,8 +23,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 
 public final class Autos {
- 
-
   
   public static CommandBase none(){
     return Commands.none();
@@ -31,6 +36,17 @@ public final class Autos {
 
     }
   
+    public static CommandBase TaxiAndBalance(){
+    return new SequentialCommandGroup(
+      new DriveUpRamp(RobotContainer.m_drivetrain),
+      new DriveOverRamp(RobotContainer.m_drivetrain),
+      new WaitCommand(0.2),
+      new DriveOverRamp(RobotContainer.m_drivetrain),
+      new DriveUpRampBackwards(RobotContainer.m_drivetrain),
+      new Balance(RobotContainer.m_drivetrain)
+      );
+    }
+
     public static CommandBase LeaveCommunity(){
       return new SequentialCommandGroup(
       new ArmToThirdNode(RobotContainer.m_arm),
@@ -39,6 +55,7 @@ public final class Autos {
       new DriveBackwards(RobotContainer.m_drivetrain)
       );
     }
+    
   /**public static CommandBase PlaceCube(){
    return new SequentialCommandGroup(
     new HandClose(RobotContainer.m_hand),

@@ -14,10 +14,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 public class Arm extends SubsystemBase {
 
   final CANSparkMax arm1 = new CANSparkMax(13, MotorType.kBrushless);
-  final CANSparkMax arm2 = new CANSparkMax(14, MotorType.kBrushless);
   private final Encoder armEncoder = new Encoder(8, 7, true, CounterBase.EncodingType.k4X);
   DigitalInput limitSwitch = new DigitalInput(2);
-  private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 9, 10);
+  private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 10, 11);
   public boolean pistonState;
 
   public Arm(){
@@ -28,7 +27,6 @@ public class Arm extends SubsystemBase {
 
   public void setArmPosition(double speed){
     arm1.set(speed);
-    arm2.set(-speed);
   }
 
   public void resetEncoder(){
@@ -55,13 +53,13 @@ public class Arm extends SubsystemBase {
   public void togglePiston() {
     if(pistonState) {
       retract();
-    } 
+    }
     else {
-      if(armEncoder.getDistance() >= 90){
+      if(armEncoder.getDistance() >= 45){
         extend();
     }
   }
-  }
+}
 
   @Override
   public void periodic(){

@@ -1,13 +1,13 @@
-package frc.robot.commands;
+package frc.robot.commands.ButtonCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Index;
 
-public class IndexEject extends CommandBase{
+public class RunIndex extends CommandBase {
   
   private final Index m_index;
 
-  public IndexEject (Index index) {
+  public RunIndex (Index index) {
     this.m_index = index;
     addRequirements(m_index);
   }
@@ -20,9 +20,9 @@ public class IndexEject extends CommandBase{
 
   @Override
   public void execute() {
-   if (m_index.getBeamBreak() == false) {
-   m_index.controlIndex(-1);
-   }
+  
+   m_index.controlIndex(1);
+   
   }
   
 
@@ -30,9 +30,6 @@ public class IndexEject extends CommandBase{
   @Override
   public boolean isFinished() {
     boolean result = false;
-    if (m_index.getBeamBreak() == true){
-      result = true;
-    }
     return result;
   }
 

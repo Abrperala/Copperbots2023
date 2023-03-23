@@ -32,16 +32,16 @@ public class Drivetrain extends SubsystemBase {
           Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0) * 0.9;
 
   private final SwerveModule m_frontLeft = new SwerveModule(FRONT_LEFT_MODULE_DRIVE_MOTOR, FRONT_LEFT_MODULE_STEER_MOTOR,
-    FRONT_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -48.87, 4.599, 0.01, 0.535, 0.228, 0.006); //kP is +.3 kS is +0.2
+    FRONT_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -48.87, 3., 0.035587, 0.4, .3, 0.00052263); //kP is +.3 kS is +0.2
 
   private final SwerveModule m_frontRight = new SwerveModule(FRONT_RIGHT_MODULE_DRIVE_MOTOR, FRONT_RIGHT_MODULE_STEER_MOTOR, 
-    FRONT_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, 15.92, 4.732, 0.01, 0.500, 0.236, 0.007);
+    FRONT_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, 15.92, 3., 0.035587, 0.4, .3, 0.00029185);
 
   private final SwerveModule m_backLeft = new SwerveModule(BACK_LEFT_MODULE_DRIVE_MOTOR, BACK_LEFT_MODULE_STEER_MOTOR, 
-    BACK_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -235.37, 4.954, 0.01, 0.511, 0.236, 0.007); //kP is +1
+    BACK_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -235.37, 3., 0.042359, 0.4, .3, 0.00062657); //kP is +1
 
   private final SwerveModule m_backRight = new SwerveModule(BACK_RIGHT_MODULE_DRIVE_MOTOR, BACK_RIGHT_MODULE_STEER_MOTOR, 
-    BACK_RIGHT_MODULE_STEER_ENCODER, true, 1.993, 0.332, 2.200, 0.304, -226.74, 4.900, 0.01, 0.584, 0.232, 0.007); //kP is +1
+    BACK_RIGHT_MODULE_STEER_ENCODER, true, 1.993, 0.332, 2.200, 0.304, -226.74, 3., 0.01678, 0.42, .3, 0.00025226); //kP is +1
 
   // private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
