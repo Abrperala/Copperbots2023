@@ -35,7 +35,7 @@ public class DriveUpRamp extends CommandBase {
        */
       
        m_targetSpeeds = new ChassisSpeeds(
-        .4, //1.5 for field
+        1.5, //1.5 for field
         0.0,
         0.0
       );

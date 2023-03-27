@@ -9,15 +9,22 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.commands.*;
+import frc.robot.commands.AutoCommands.ArmUpWithStop;
 import frc.robot.commands.AutoCommands.Balance;
 import frc.robot.commands.AutoCommands.DriveBackwards;
+import frc.robot.commands.AutoCommands.DriveForwardSlowly;
 import frc.robot.commands.AutoCommands.DriveOverRamp;
+import frc.robot.commands.AutoCommands.DriveOverRampBackwards;
 import frc.robot.commands.AutoCommands.DriveUpRamp;
 import frc.robot.commands.AutoCommands.DriveUpRampBackwards;
+import frc.robot.commands.AutoCommands.EjectIntake;
+import frc.robot.commands.AutoCommands.StopDrive;
+import frc.robot.commands.AutoCommands.StopIntake;
 import frc.robot.commands.ButtonCommands.ArmToIndex;
+import frc.robot.commands.ButtonCommands.ArmToSecondNode;
 import frc.robot.commands.ButtonCommands.ArmToThirdNode;
+import frc.robot.commands.ButtonCommands.TopIntakeGoBrrrrrrrBackwards;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -28,8 +35,15 @@ public final class Autos {
     return Commands.none();
   }
   
+
+  public static CommandBase ScoreLow(){
+   return new SequentialCommandGroup(
+    new EjectIntake(RobotContainer.m_topRoller),
+    new WaitCommand(.5),
+    new StopIntake(RobotContainer.m_topRoller));
+  }
+
   public static CommandBase JustBalance(){
-   
     return new SequentialCommandGroup(
     new DriveUpRamp(RobotContainer.m_drivetrain), 
     new Balance(RobotContainer.m_drivetrain));
@@ -47,8 +61,8 @@ public final class Autos {
       );
     }
 
-    public static CommandBase LeaveCommunity(){
-      return new SequentialCommandGroup(
+    public static CommandBase ScoreLowAndLeaveCommunity(){
+    return new SequentialCommandGroup(
       new ArmToThirdNode(RobotContainer.m_arm),
       new ArmToIndex(RobotContainer.m_arm),
       new WaitCommand(5),
@@ -56,32 +70,31 @@ public final class Autos {
       );
     }
     
-  /**public static CommandBase PlaceCube(){
-   return new SequentialCommandGroup(
-    new HandClose(RobotContainer.m_hand),
-    new ParallelCommandGroup(
-      new KeepHandClosed(RobotContainer.m_hand),
+  public static CommandBase ScoreLowAndBalance(){
+    return new SequentialCommandGroup(
+      new EjectIntake(RobotContainer.m_topRoller),
+      new WaitCommand(.5),
+      new StopIntake(RobotContainer.m_topRoller),
+      new DriveUpRamp(RobotContainer.m_drivetrain), 
+      new Balance(RobotContainer.m_drivetrain));
+
+  }
+  
+  public static CommandBase ScoreMiddle(){
+    return new SequentialCommandGroup(
+      new InstantCommand((RobotContainer.m_hand::extend)),
       new ArmToSecondNode(RobotContainer.m_arm),
-      new SequentialCommandGroup(
-        new WaitCommand(1),
-        new ParallelCommandGroup(
-          new DriveForwardSlowly(RobotContainer.m_drivetrain),
-          new SequentialCommandGroup(
-            new WaitCommand(1),
-            new HandOpen(RobotContainer.m_hand),
-            new WaitCommand(.5),
-            new HandClose(RobotContainer.m_hand),
-            new ParallelCommandGroup(
-              new DriveBackwards(RobotContainer.m_drivetrain),
-                new SequentialCommandGroup(
-                new WaitCommand(1),
-                new ArmToIndex(RobotContainer.m_arm)
-        
-   )))))));
-  }**/
-  
-  
-  
+      new DriveForwardSlowly(RobotContainer.m_drivetrain),
+      new WaitCommand(1),
+      new StopDrive(RobotContainer.m_drivetrain),
+      new InstantCommand((RobotContainer.m_hand::retract)),
+      new DriveBackwards(RobotContainer.m_drivetrain),
+      new WaitCommand(1),
+      new StopDrive(RobotContainer.m_drivetrain),
+      new ArmToIndex(RobotContainer.m_arm)
+    );
+
+  }
   
   
   

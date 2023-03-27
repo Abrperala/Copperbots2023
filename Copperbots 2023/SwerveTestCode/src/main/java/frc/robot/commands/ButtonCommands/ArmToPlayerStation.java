@@ -2,15 +2,16 @@ package frc.robot.commands.ButtonCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 
-public class ArmToThirdNode extends CommandBase{
+public class ArmToPlayerStation extends CommandBase{
   TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(30000, 70);
   ProfiledPIDController pid = new ProfiledPIDController(.022, 0.000, 0.0003, constraints);
+ 
   private final Arm m_arm;
-
-  public ArmToThirdNode(Arm arm) {
+ 
+  public ArmToPlayerStation(Arm arm) {
     this.m_arm = arm;
     addRequirements(m_arm);
   }
@@ -23,7 +24,8 @@ public class ArmToThirdNode extends CommandBase{
 
   @Override
   public void execute() {
-  m_arm.setArmPosition(pid.calculate(m_arm.getEncoderDistance(), 110));
+  m_arm.setArmPosition(pid.calculate(m_arm.getEncoderDistance(), 87) );
+ 
    }
   
 

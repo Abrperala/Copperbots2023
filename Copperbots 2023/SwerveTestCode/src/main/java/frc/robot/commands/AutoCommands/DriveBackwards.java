@@ -23,7 +23,7 @@ public class DriveBackwards extends CommandBase {
     public void execute() { 
       
        m_targetSpeeds = new ChassisSpeeds(
-        -1., 
+        -.2 * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, 
         0.0,
         0.0
       );

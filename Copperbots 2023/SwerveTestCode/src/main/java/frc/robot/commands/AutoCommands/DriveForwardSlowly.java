@@ -23,7 +23,7 @@ public class DriveForwardSlowly extends CommandBase {
     public void execute() { 
       
        m_targetSpeeds = new ChassisSpeeds(
-        .2, 
+        .2 * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, 
         0.0,
         0.0
       );
@@ -36,13 +36,13 @@ public class DriveForwardSlowly extends CommandBase {
      */
     @Override
     public boolean isFinished(){
-        return false;
+        return true;
     }
   
   
     @Override
     public void end(boolean interrupted) {
-      m_drivetrain.driveFromSpeeds(new ChassisSpeeds(), false);
+      
     }
   
 

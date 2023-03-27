@@ -23,8 +23,8 @@ import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.TurnOnField;
-import frc.robot.commands.AutoCommands.ArmExtend;
 import frc.robot.commands.ButtonCommands.ArmToIndex;
+import frc.robot.commands.ButtonCommands.ArmToPlayerStation;
 import frc.robot.commands.ButtonCommands.ArmToSecondNode;
 import frc.robot.commands.ButtonCommands.ArmToThirdNode;
 import frc.robot.commands.ButtonCommands.BottomIntakeGoBrrrrrrr;
@@ -83,11 +83,13 @@ public class RobotContainer {
 
     m_autoChooser.setDefaultOption("None", Autos.none());
     m_autoChooser.addOption("JustBalance", Autos.JustBalance());
-    m_autoChooser.addOption("LeaveCommunity", Autos.LeaveCommunity());
+    m_autoChooser.addOption("ScoreLowAndLeaveCommunity", Autos.ScoreLowAndLeaveCommunity());
     m_autoChooser.addOption("Taxi and Balance", Autos.TaxiAndBalance());
-   // m_autoChooser.addOption("PlaceCube", Autos.PlaceCube());
-    
-   SmartDashboard.putData("Auto mode", m_autoChooser);
+    m_autoChooser.addOption("Score Low and Balance", Autos.ScoreLowAndBalance());
+    m_autoChooser.addOption("Score Middle", Autos.ScoreMiddle());
+    m_autoChooser.addOption("Just Score Low", Autos.ScoreLow());
+
+    SmartDashboard.putData("Auto mode", m_autoChooser);
     SmartDashboard.putData("Chosen Auto",  m_autoChooser.getSelected());
   }
   /**
@@ -124,7 +126,7 @@ public class RobotContainer {
     new JoystickButton(m_operator, 3).onTrue(new ArmToThirdNode(m_arm));
 
 
-    new JoystickButton(m_operator, 4).onTrue(new SequentialCommandGroup(new RunIndexWithBeamBreak(m_index), new InstantCommand(m_hand::extend)));
+    new JoystickButton(m_operator, 4).onTrue(new ArmToPlayerStation(m_arm));
     
     // sets the first left bumper to the command HandClose
     new JoystickButton(m_operator, 5).onTrue(new InstantCommand(m_hand::retract));

@@ -7,7 +7,7 @@ import frc.robot.subsystems.Arm;
 public class ArmToIndex extends CommandBase {
   
   TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(30000, 70);
-  ProfiledPIDController pid = new ProfiledPIDController(.03, 0.0006, 0.00, constraints);
+  ProfiledPIDController pid = new ProfiledPIDController(.022, 0.000, 0.0003, constraints);
    
   private final Arm m_arm;
 
@@ -25,7 +25,7 @@ public class ArmToIndex extends CommandBase {
 
   @Override
   public void execute() {
-  m_arm.setArmPosition(pid.calculate(m_arm.getEncoderDistance(), 0)* .1);
+  m_arm.setArmPosition(pid.calculate(m_arm.getEncoderDistance(), 0));
   if (m_arm.getLimitSwitch() == false) {
     m_arm.setArmPosition(0);
   }
