@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.ArmUpWithStop;
+import frc.robot.commands.AutoCommands.AutonArmToHigh;
 import frc.robot.commands.AutoCommands.Balance;
 import frc.robot.commands.AutoCommands.DriveBackwards;
 import frc.robot.commands.AutoCommands.DriveForwardSlowly;
@@ -61,14 +62,6 @@ public final class Autos {
       );
     }
 
-    public static CommandBase ScoreLowAndLeaveCommunity(){
-    return new SequentialCommandGroup(
-      new ArmToThirdNode(RobotContainer.m_arm),
-      new ArmToIndex(RobotContainer.m_arm),
-      new WaitCommand(5),
-      new DriveBackwards(RobotContainer.m_drivetrain)
-      );
-    }
     
   public static CommandBase ScoreLowAndBalance(){
     return new SequentialCommandGroup(
@@ -83,11 +76,15 @@ public final class Autos {
   public static CommandBase ScoreMiddle(){
     return new SequentialCommandGroup(
       new InstantCommand((RobotContainer.m_hand::extend)),
-      new ArmToSecondNode(RobotContainer.m_arm),
+      new AutonArmToHigh(RobotContainer.m_arm),
+      new InstantCommand((RobotContainer.m_arm::extend)),
       new DriveForwardSlowly(RobotContainer.m_drivetrain),
       new WaitCommand(1),
       new StopDrive(RobotContainer.m_drivetrain),
       new InstantCommand((RobotContainer.m_hand::retract)),
+      new WaitCommand(.2),
+      new InstantCommand((RobotContainer.m_arm::retract)),
+      new WaitCommand(.5),
       new DriveBackwards(RobotContainer.m_drivetrain),
       new WaitCommand(1),
       new StopDrive(RobotContainer.m_drivetrain),

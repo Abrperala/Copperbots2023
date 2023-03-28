@@ -23,6 +23,7 @@ import frc.robot.subsystems.Hand;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.TurnOnField;
+import frc.robot.commands.AutoCommands.RunIndexWithBeamBreak;
 import frc.robot.commands.ButtonCommands.ArmToIndex;
 import frc.robot.commands.ButtonCommands.ArmToPlayerStation;
 import frc.robot.commands.ButtonCommands.ArmToSecondNode;
@@ -33,7 +34,6 @@ import frc.robot.commands.ButtonCommands.HandTwist;
 import frc.robot.commands.ButtonCommands.HandTwistBack;
 import frc.robot.commands.ButtonCommands.IndexReverse;
 import frc.robot.commands.ButtonCommands.RunIndex;
-import frc.robot.commands.ButtonCommands.RunIndexWithBeamBreak;
 import frc.robot.commands.ButtonCommands.TopIntakeGoBrrrrrrr;
 import frc.robot.commands.ButtonCommands.TopIntakeGoBrrrrrrrBackwards;
 import frc.robot.subsystems.Arm;
@@ -83,10 +83,9 @@ public class RobotContainer {
 
     m_autoChooser.setDefaultOption("None", Autos.none());
     m_autoChooser.addOption("JustBalance", Autos.JustBalance());
-    m_autoChooser.addOption("ScoreLowAndLeaveCommunity", Autos.ScoreLowAndLeaveCommunity());
     m_autoChooser.addOption("Taxi and Balance", Autos.TaxiAndBalance());
     m_autoChooser.addOption("Score Low and Balance", Autos.ScoreLowAndBalance());
-    m_autoChooser.addOption("Score Middle", Autos.ScoreMiddle());
+    m_autoChooser.addOption("Score High", Autos.ScoreMiddle());
     m_autoChooser.addOption("Just Score Low", Autos.ScoreLow());
 
     SmartDashboard.putData("Auto mode", m_autoChooser);
