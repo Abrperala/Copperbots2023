@@ -5,6 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Commands;
+
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
@@ -94,7 +97,14 @@ public final class Autos {
   }
   
   
-  
+  public static CommandBase NonBumpAuto(){
+    return new SequentialCommandGroup(
+      new InstantCommand((RobotContainer.m_hand::extend)),
+      new AutonArmToHigh(RobotContainer.m_arm),
+      new InstantCommand((RobotContainer.m_arm::extend)),
+      
+    );
+  }
   
   
   
