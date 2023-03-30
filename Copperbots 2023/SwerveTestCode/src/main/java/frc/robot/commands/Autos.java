@@ -6,8 +6,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 
-import com.pathplanner.lib.commands.FollowPathWithEvents;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
@@ -31,10 +38,42 @@ import frc.robot.commands.ButtonCommands.TopIntakeGoBrrrrrrrBackwards;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-
+import frc.robot.subsystems.Drivetrain;
 
 public final class Autos {
+  public static final PIDConstants AUTO_TRANSLATION_CONSTANTS = new PIDConstants(0.01, 0, 0);
+  public static final PIDConstants AUTO_ROTATION_CONSTANTS = new PIDConstants(2.8, 0, 0);
+  private static final Map<String, Command> eventMap = new HashMap<>(Map.ofEntries(
+    
+  Map.entry("Start", new SequentialCommandGroup(
+    new InstantCommand((RobotContainer.m_hand::extend)),
+    new AutonArmToHigh(RobotContainer.m_arm)
+    )),
+
+  Map.entry("1stCube", new SequentialCommandGroup(
+    new InstantCommand((RobotContainer.m_arm::extend)),
+    new InstantCommand((RobotContainer.m_hand::retract)),
+    new WaitCommand(.2),
+    new InstantCommand((RobotContainer.m_arm::retract))
+    ))
+
   
+
+    ));
+
+
+
+    private static final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+    RobotContainer.m_drivetrain::getPose,
+    RobotContainer.m_drivetrain::resetOdometry,
+    AUTO_TRANSLATION_CONSTANTS,
+    AUTO_ROTATION_CONSTANTS, 
+    (states) -> RobotContainer.m_drivetrain.driveFromSpeeds(Drivetrain.m_kinematics.toChassisSpeeds(states), false),
+    eventMap,
+    true,
+    RobotContainer.m_drivetrain
+  );
+
   public static CommandBase none(){
     return Commands.none();
   }
@@ -96,15 +135,6 @@ public final class Autos {
 
   }
   
-  
-  public static CommandBase NonBumpAuto(){
-    return new SequentialCommandGroup(
-      new InstantCommand((RobotContainer.m_hand::extend)),
-      new AutonArmToHigh(RobotContainer.m_arm),
-      new InstantCommand((RobotContainer.m_arm::extend)),
-      
-    );
-  }
   
   
   

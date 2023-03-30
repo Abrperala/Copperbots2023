@@ -14,7 +14,7 @@ public class Hand extends SubsystemBase{
   
   public boolean pistonState;
   private DoubleSolenoid m_DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 8, 9);
-  private CANSparkMax hand_SparkMax = new CANSparkMax(15, MotorType.kBrushless);
+ // private CANSparkMax hand_SparkMax = new CANSparkMax(15, MotorType.kBrushless);
   private Encoder handEncoder = new Encoder(3, 4, true, CounterBase.EncodingType.k4X);
   
   public Hand(){
@@ -45,9 +45,7 @@ public class Hand extends SubsystemBase{
   }
 
   public void controlHand(double input){
-   hand_SparkMax.set(-
-   
-   input);
+  // hand_SparkMax.set(-input);
   }
   
   public double getEncoderDistance(){

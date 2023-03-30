@@ -145,9 +145,9 @@ public class RobotContainer {
     // sets the operator controller options button to the IndexReverse Command
     new JoystickButton(m_operator, 10).whileTrue(new RunIndex(m_index));
 
-    new JoystickButton(m_operator, 11).onTrue(new HandTwist(m_hand));
+    //new JoystickButton(m_operator, 11).onTrue(new HandTwist(m_hand));
 
-    new JoystickButton(m_operator, 12).onTrue(new HandTwistBack(m_hand));
+    //new JoystickButton(m_operator, 12).onTrue(new HandTwistBack(m_hand));
 
     // sets the operator controller ps4 button  to the command togglePiston on intake
     new JoystickButton(m_operator, 13).onTrue(new InstantCommand(m_intake::togglePiston));
