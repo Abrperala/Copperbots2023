@@ -68,7 +68,7 @@ public final class Autos {
     RobotContainer.m_drivetrain::resetOdometry,
     AUTO_TRANSLATION_CONSTANTS,
     AUTO_ROTATION_CONSTANTS, 
-    (states) -> RobotContainer.m_drivetrain.driveFromSpeeds(Drivetrain.m_kinematics.toChassisSpeeds(states), false),
+    RobotContainer.m_drivetrain::setChassisSpeeds,
     eventMap,
     true,
     RobotContainer.m_drivetrain

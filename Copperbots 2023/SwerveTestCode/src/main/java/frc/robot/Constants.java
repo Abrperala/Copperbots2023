@@ -72,6 +72,16 @@ public final class Constants {
      * Should be measured from center to center.
      */
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.552;
+    public static final double DRIVETRAIN_WIDTH = Units.inchesToMeters(.86);
+    public static final double DRIVETRAIN_LENGTH = Units.inchesToMeters(.86);
+    public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
+    public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+
+    public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
+        new Translation2d(DRIVETRAIN_LENGTH / 2.0, DRIVETRAIN_WIDTH / 2.0),
+        new Translation2d(DRIVETRAIN_LENGTH / 2.0, -DRIVETRAIN_WIDTH / 2.0),
+        new Translation2d(-DRIVETRAIN_LENGTH / 2.0, DRIVETRAIN_WIDTH / 2.0),
+        new Translation2d(-DRIVETRAIN_LENGTH / 2.0, -DRIVETRAIN_WIDTH / 2.0));
     /**
      * The front-to-back distance between the drivetrain wheels.
      *

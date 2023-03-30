@@ -124,6 +124,10 @@ public class Drivetrain extends SubsystemBase {
     return positions;
   }
 
+  public void setChassisSpeeds(ChassisSpeeds targetSpeeds) {
+    commandModules(Constants.DriveConstants.swerveKinematics.toSwerveModuleStates(targetSpeeds));
+}
+
   /**
    * Control serve module output with proper homing behavior
    * @param states Desired module states when m_chassisSpeeds != (0,0,0)
@@ -169,7 +173,7 @@ public class Drivetrain extends SubsystemBase {
   public double getAngle() {
     return m_gyro.getAngle();
   }
-  
+
   @Override
   public void periodic() {
 
