@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
@@ -21,6 +23,7 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.*;
 import frc.robot.commands.AutoCommands.ArmUpWithStop;
 import frc.robot.commands.AutoCommands.AutonArmToHigh;
+import frc.robot.commands.AutoCommands.AutonIntake;
 import frc.robot.commands.AutoCommands.Balance;
 import frc.robot.commands.AutoCommands.DriveBackwards;
 import frc.robot.commands.AutoCommands.DriveForwardSlowly;
@@ -29,6 +32,7 @@ import frc.robot.commands.AutoCommands.DriveOverRampBackwards;
 import frc.robot.commands.AutoCommands.DriveUpRamp;
 import frc.robot.commands.AutoCommands.DriveUpRampBackwards;
 import frc.robot.commands.AutoCommands.EjectIntake;
+import frc.robot.commands.AutoCommands.RunIndexWithBeamBreak;
 import frc.robot.commands.AutoCommands.StopDrive;
 import frc.robot.commands.AutoCommands.StopIntake;
 import frc.robot.commands.ButtonCommands.ArmToIndex;
@@ -39,10 +43,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.TopRoller;
 
 public final class Autos {
-  public static final PIDConstants AUTO_TRANSLATION_CONSTANTS = new PIDConstants(0.01, 0, 0);
-  public static final PIDConstants AUTO_ROTATION_CONSTANTS = new PIDConstants(2.8, 0, 0);
+  public static final PIDConstants AUTO_TRANSLATION_CONSTANTS = new PIDConstants(1, 0, 0);
+  public static final PIDConstants AUTO_ROTATION_CONSTANTS = new PIDConstants(0, 0, 0);
+  
   private static final Map<String, Command> eventMap = new HashMap<>(Map.ofEntries(
     
   Map.entry("Start", new SequentialCommandGroup(
@@ -55,15 +61,39 @@ public final class Autos {
     new InstantCommand((RobotContainer.m_hand::retract)),
     new WaitCommand(.2),
     new InstantCommand((RobotContainer.m_arm::retract))
-    ))
+    )),
 
+  Map.entry("1stCubeTo2ndCube", new SequentialCommandGroup(
+    new ArmToIndex(RobotContainer.m_arm)
+  )),
+
+  Map.entry("PickUp2ndCube", new SequentialCommandGroup(
+    new InstantCommand((RobotContainer.m_intake::extend)),
+    new AutonIntake(RobotContainer.m_topRoller)
+  )),
   
+  Map.entry("Got2ndCube", new SequentialCommandGroup(
+    new StopIntake(RobotContainer.m_topRoller),
+    new InstantCommand((RobotContainer.m_intake::retract)),
+    new RunIndexWithBeamBreak(RobotContainer.m_index),
+    new InstantCommand((RobotContainer.m_hand::extend))
+  )),
+
+  Map.entry("Before2ndCube", new SequentialCommandGroup(
+    new AutonArmToHigh(RobotContainer.m_arm)
+
+  )),
+
+  Map.entry("event", new SequentialCommandGroup(
+    new InstantCommand((RobotContainer.m_hand::retract)),
+    new WaitCommand(.2)
+  ))
 
     ));
 
 
 
-    private static final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+  private static final SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
     RobotContainer.m_drivetrain::getPose,
     RobotContainer.m_drivetrain::resetOdometry,
     AUTO_TRANSLATION_CONSTANTS,
@@ -115,7 +145,11 @@ public final class Autos {
 
   }
   
-  public static CommandBase ScoreMiddle(){
+  public static CommandBase DriveForwardTest(){
+    return new DriveForwardSlowly(RobotContainer.m_drivetrain);
+  }
+  
+  public static CommandBase ScoreHigh(){
     return new SequentialCommandGroup(
       new InstantCommand((RobotContainer.m_hand::extend)),
       new AutonArmToHigh(RobotContainer.m_arm),
@@ -135,9 +169,15 @@ public final class Autos {
 
   }
   
-  
-  
-  
+  public static CommandBase TwoCubeNoBump() {
+    return autoBuilder.fullAuto(PathPlanner.loadPathGroup("Non-Bump2Cube", new PathConstraints(4, 3)));
+
+  }
+
+  public static CommandBase ForwardTest() {
+    return autoBuilder.fullAuto(PathPlanner.loadPathGroup("Forward", new PathConstraints(4, 3)));
+  }
+
   private Autos() {
     throw new UnsupportedOperationException("This is a utility class!");
   }

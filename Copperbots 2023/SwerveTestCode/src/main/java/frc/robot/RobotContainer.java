@@ -85,12 +85,16 @@ public class RobotContainer {
     m_autoChooser.addOption("JustBalance", Autos.JustBalance());
     m_autoChooser.addOption("Taxi and Balance", Autos.TaxiAndBalance());
     m_autoChooser.addOption("Score Low and Balance", Autos.ScoreLowAndBalance());
-    m_autoChooser.addOption("Score High", Autos.ScoreMiddle());
+    m_autoChooser.addOption("Score High", Autos.ScoreHigh());
     m_autoChooser.addOption("Just Score Low", Autos.ScoreLow());
-
+    m_autoChooser.addOption("2 Cube no Bump", Autos.TwoCubeNoBump());
+    m_autoChooser.addOption("Forward Test ", Autos.ForwardTest());
+    m_autoChooser.addOption("Drive forward test", Autos.DriveForwardTest());
+    
     SmartDashboard.putData("Auto mode", m_autoChooser);
     SmartDashboard.putData("Chosen Auto",  m_autoChooser.getSelected());
   }
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -100,12 +104,13 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+
   private void configureBindings() {
     
     //Driver Button Bindings
 
     // sets the driver controller square button to the command AlignWithPoles
-    //new JoystickButton(m_driver, 1).onTrue(new AlignWithPoles(m_drivetrain, m_limelight));
+    //  new JoystickButton(m_driver, 1).onTrue(new AlignWithPoles(m_drivetrain, m_limelight));
   
     // sets the driver controller options button to reset the drive gyro
     new JoystickButton(m_driver, 10).onTrue(new InstantCommand(m_drivetrain::resetGyro));
@@ -165,8 +170,6 @@ public class RobotContainer {
    */
 
   public Command getAutonomousCommand() {
-
-    SmartDashboard.putData("Chosen Auto when on Autonomous Command",  m_autoChooser.getSelected());
     return m_autoChooser.getSelected();
   }
   

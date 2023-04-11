@@ -31,12 +31,9 @@ public class DriveForwardSlowly extends CommandBase {
     }
     
   
-    /**
-     * stops the command when the error of the gyro is greater than 12
-     */
     @Override
     public boolean isFinished(){
-        return true;
+        return false;
     }
   
   

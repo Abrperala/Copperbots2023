@@ -34,16 +34,16 @@ public class Drivetrain extends SubsystemBase {
           Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0) * 0.9;
 
   private final SwerveModule m_frontLeft = new SwerveModule(FRONT_LEFT_MODULE_DRIVE_MOTOR, FRONT_LEFT_MODULE_STEER_MOTOR,
-    FRONT_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -48.87, 3., 0.035587, 0.4, .3, 0.00052263); //kP is +.3 kS is +0.2
+    FRONT_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -48.87, 3., 0., 0.4, .3, 0.00052263); //kP is +.3 kS is +0.2
 
   private final SwerveModule m_frontRight = new SwerveModule(FRONT_RIGHT_MODULE_DRIVE_MOTOR, FRONT_RIGHT_MODULE_STEER_MOTOR, 
-    FRONT_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, 15.92, 3., 0.035587, 0.4, .3, 0.00029185);
+    FRONT_RIGHT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, 15.92, 3., 0., 0.4, .3, 0.00029185);
 
   private final SwerveModule m_backLeft = new SwerveModule(BACK_LEFT_MODULE_DRIVE_MOTOR, BACK_LEFT_MODULE_STEER_MOTOR, 
-    BACK_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -235.37, 3., 0.042359, 0.4, .3, 0.00062657); //kP is +1
+    BACK_LEFT_MODULE_STEER_ENCODER, false, 1.993, 0.332, 2.200, 0.304, -235.37, 3., 0., 0.4, .3, 0.00062657); //kP is +1
 
   private final SwerveModule m_backRight = new SwerveModule(BACK_RIGHT_MODULE_DRIVE_MOTOR, BACK_RIGHT_MODULE_STEER_MOTOR, 
-    BACK_RIGHT_MODULE_STEER_ENCODER, true, 1.993, 0.332, 2.200, 0.304, -226.74, 3., 0.01678, 0.42, .3, 0.00025226); //kP is +1
+    BACK_RIGHT_MODULE_STEER_ENCODER, true, 1.993, 0.332, 2.200, 0.304, -226.74, 3., 0., 0.42, .3, 0.00025226); //kP is +1
 
   // private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -73,6 +73,7 @@ public class Drivetrain extends SubsystemBase {
    * @param rot Angular rate of the robot.
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
+   
   @SuppressWarnings("ParameterName")
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     if(fieldRelative) {
@@ -125,7 +126,14 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void setChassisSpeeds(ChassisSpeeds targetSpeeds) {
-    commandModules(Constants.DriveConstants.swerveKinematics.toSwerveModuleStates(targetSpeeds));
+    setModuleStates(Constants.DriveConstants.swerveKinematics.toSwerveModuleStates(targetSpeeds));
+}
+
+public void setModuleStates(SwerveModuleState[] desiredStates) {
+    m_frontLeft.setDesiredState(desiredStates[0]);
+    m_frontRight.setDesiredState(desiredStates[1]);
+    m_backLeft.setDesiredState(desiredStates[2]);
+    m_backRight.setDesiredState(desiredStates[3]); 
 }
 
   /**

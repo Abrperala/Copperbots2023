@@ -41,7 +41,7 @@ public class AutonArmToHigh extends CommandBase{
 
   @Override
   public void end(boolean interrupted) {
-  
+  m_arm.setArmPosition(.01);
   }
 }
 

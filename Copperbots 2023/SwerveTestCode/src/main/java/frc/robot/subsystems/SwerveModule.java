@@ -118,13 +118,13 @@ public class SwerveModule {
     m_turningPIDController =
       new ProfiledPIDController(
           turn_kP,
-          0.0,
+          5,
           turn_kD,
           new TrapezoidProfile.Constraints(
             5.5 * Math.PI, 3.5 * Math.PI));
               // Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
-    m_turningPIDController.setTolerance(0.1); //og 0.05
+    m_turningPIDController.setTolerance(.01); //og 0.05
     
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
